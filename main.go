@@ -4,21 +4,47 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
-type model struct {
+type Table struct {
+	Attack  Card
+	Defense Card
+}
+type Player int // 0 = player 1 = Computer
+type Game struct {
 	deck        []Card
 	player1Hand []Card
 	player2Hand []Card
 	table       []Card
+	engine      *Engine
 	cursor      int
+	winner      Player
+	turn        Player // Who is the attacker
+	gameover    bool
+	colors      map[string]lipgloss.Style
+	trump       Suit
 }
 
-func initialModel() model {
+const (
+	size   = 3
+	yellow = "#FF9E3B"
+	dark   = "#3C3A32"
+	gray   = "#717C7C"
+	light  = "#DCD7BA"
+	red    = "#E63D3D"
+	green  = "#98BB6C"
+	blue   = "#7E9CD8"
+)
+
+func initialGame() Game {
 	deck := NewDeck()
 	ShuffleDeck(deck)
+
+	trumpCard := deck[len(deck)-1]
 
 	player1Hand := deck[:6]
 	deck = deck[6:]
@@ -26,46 +52,100 @@ func initialModel() model {
 	player2Hand := deck[:6]
 	deck = deck[6:]
 
-	return model{
+	return Game{
 		deck:        deck,
 		player1Hand: player1Hand,
 		player2Hand: player2Hand,
 		table:       []Card{},
 		cursor:      0,
+		engine:      NewEngine(1000),
+		turn:        0, // Player starts as attacker
+		trump:       trumpCard.Suit,
 	}
 }
 
-func (m model) Init() tea.Cmd {
+func (g Game) Init() tea.Cmd {
 	return tea.SetWindowTitle("Durak")
 }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+type passTurnToAI struct{}
+type aiFinishedTurn struct{}
+
+func (g *Game) ToBoard() *Board {
+	return &Board{
+		PlayerHand:   g.player1Hand,
+		OpponentHand: g.player2Hand,
+		Table:        g.table,
+		Deck:         g.deck,
+		TrumpSuit:    g.trump,
+		Attacker:     g.turn,
+	}
+}
+
+func (g *Game) FromBoard(b *Board) {
+	g.player1Hand = b.PlayerHand
+	g.player2Hand = b.OpponentHand
+	g.table = b.Table
+	g.deck = b.Deck
+	g.turn = b.Attacker
+}
+
+func aiMove(g *Game) tea.Cmd {
+	return func() tea.Msg {
+		board := g.ToBoard()
+		updatedBoard := g.engine.HandleAITurn(board)
+		g.FromBoard(updatedBoard)
+
+		isover, win := g.engine.CheckGameOver(g.ToBoard(), Move{})
+		if isover {
+			g.gameover = true
+			g.winner = win
+		}
+
+		// If AI is now the attacker, it needs to make another move (an attack).
+		if g.turn == 1 && len(g.table) == 0 {
+			return passTurnToAI{}
+		}
+
+		return aiFinishedTurn{}
+	}
+}
+
+func (g Game) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case passTurnToAI:
+		time.Sleep(time.Second * 1)
+		return g, aiMove(&g)
+	case aiFinishedTurn:
+		return g, nil
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
-			return m, tea.Quit
+			return g, tea.Quit
 		case "right", "l":
-			if m.cursor < len(m.player1Hand)-1 {
-				m.cursor++
+			if g.cursor < len(g.player1Hand)-1 {
+				g.cursor++
 			}
 		case "left", "h":
-			if m.cursor > 0 {
-				m.cursor--
+			if g.cursor > 0 {
+				g.cursor--
 			}
 		case " ", "enter":
-			// Move card from hand to table
-			if len(m.player1Hand) > 0 {
-				card := m.player1Hand[m.cursor]
-				m.table = append(m.table, card)
-				m.player1Hand = append(m.player1Hand[:m.cursor], m.player1Hand[m.cursor+1:]...)
-				if m.cursor >= len(m.player1Hand) && len(m.player1Hand) > 0 {
-					m.cursor = len(m.player1Hand) - 1
+			// Player attacks
+			if g.turn == 0 && len(g.table) == 0 {
+				if len(g.player1Hand) > 0 {
+					card := g.player1Hand[g.cursor]
+					g.table = append(g.table, card)
+					g.player1Hand = append(g.player1Hand[:g.cursor], g.player1Hand[g.cursor+1:]...)
+					if g.cursor >= len(g.player1Hand) && len(g.player1Hand) > 0 {
+						g.cursor = len(g.player1Hand) - 1
+					}
+					return g, func() tea.Msg { return passTurnToAI{} }
 				}
 			}
 		}
 	}
-	return m, nil
+	return g, nil
 }
 
 // renderCards renders cards side-by-side, highlighting the selected card.
@@ -92,24 +172,44 @@ func renderCards(cards []Card, cursor int, selected bool) string {
 	return strings.Join(lines[:], "\n")
 }
 
-func (m model) View() string {
+func (g Game) View() string {
 	var s strings.Builder
 
+	if g.gameover {
+		s.WriteString("Game Over!\n")
+		switch g.winner {
+		case 0:
+			s.WriteString("You win!\n")
+		case 1:
+			s.WriteString("You lose!\n")
+		default:
+			s.WriteString("It's a draw!\n")
+		}
+		return s.String()
+	}
+
 	s.WriteString("Player 2's hand:\n")
-	s.WriteString(renderCards(m.player2Hand, -1, false)) // No cursor for player 2
+	s.WriteString(renderCards(g.player2Hand, -1, false)) // No cursor for player 2
 	s.WriteString("\n\n")
 
 	s.WriteString("Table:\n")
-	if len(m.table) == 0 {
+	if len(g.table) == 0 {
 		s.WriteString("[empty]\n")
 	} else {
-		s.WriteString(renderCards(m.table, -1, false)) // No cursor for table
+		s.WriteString(renderCards(g.table, -1, false)) // No cursor for table
 	}
 	s.WriteString("\n\n")
 
 	s.WriteString("Player 1's hand:\n")
-	s.WriteString(renderCards(m.player1Hand, m.cursor, true))
+	s.WriteString(renderCards(g.player1Hand, g.cursor, true))
 	s.WriteString("\n\n")
+
+	s.WriteString(fmt.Sprintf("Trump suit: %s\n", g.trump.String()))
+	if g.turn == 0 {
+		s.WriteString("Your turn to attack.\n")
+	} else {
+		s.WriteString("AI's turn to attack.\n")
+	}
 
 	s.WriteString("Use left/right arrows to move, space/enter to select, 'q' to quit.")
 
@@ -117,9 +217,10 @@ func (m model) View() string {
 }
 
 func main() {
-	p := tea.NewProgram(initialModel())
+	p := tea.NewProgram(initialGame())
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
 	}
 }
+
