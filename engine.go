@@ -1,5 +1,7 @@
 package main
 
+import "log"
+
 // NOTE: The following types are assumed to be defined in card.go
 // type Card struct { Suit Suit; Rank Rank }
 // type Suit int
@@ -59,18 +61,20 @@ func NewEngine(depth int) *Engine {
 }
 
 // HandleAITurn processes the AI's entire turn, whether attacking or defending.
+// Get's Handed a copy of the board.
 func (e *Engine) HandleAITurn(board *Board) *Board {
+	log.Printf("Current board in AI turn: %%#v: %#v\n", board)
 	if board.Attacker == 1 { // AI is Attacker
+		log.Println("Ai is attacking...")
 		move := e.ai.Solve(board.Copy()) // AI decides what card to attack with
 		if !move.IsPass {
 			board.Table = append(board.Table, move.Card)
 			board.OpponentHand = removeCard(board.OpponentHand, move.Card)
 		}
 	} else { // AI is Defender
+		log.Println("Ai is defending...")
 		move := e.ai.Solve(board.Copy()) // AI decides to defend or take
-
 		if move.IsPass {
-			// AI takes cards
 			board.OpponentHand = append(board.OpponentHand, board.Table...)
 			board.Table = []Card{}
 		} else {
@@ -152,4 +156,3 @@ func removeCard(hand []Card, cardToRemove Card) []Card {
 	}
 	return hand
 }
-

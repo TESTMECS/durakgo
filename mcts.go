@@ -1,5 +1,7 @@
 package main
 
+import "log"
+
 type AI interface {
 	Solve(board *Board) Move
 }
@@ -18,6 +20,7 @@ func NewMCTS(engine *Engine, depth int) *MCTS {
 
 func (m *MCTS) Solve(board *Board) Move {
 	//TODO: Implement MCTS logic here
-	// For now, return a placeholder "pass" move.
+	log.Println("MCTS logic not implemented yet")
 	return Move{IsPass: true}
 }
+

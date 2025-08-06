@@ -95,7 +95,8 @@ func (g *Game) FromBoard(b *Board) {
 
 func aiMove(g *Game) tea.Cmd {
 	return func() tea.Msg {
-		board := g.ToBoard()                         // convert game state to board
+		board := g.ToBoard() // convert game state to board
+		log.Printf("Current board: %%#v: %#v\n", board)
 		updatedBoard := g.engine.HandleAITurn(board) // passing in a copy of the board
 		g.FromBoard(updatedBoard)
 
@@ -117,6 +118,7 @@ func aiMove(g *Game) tea.Cmd {
 func (g Game) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case passTurnToAI:
+		log.Println("Ai turn in progress...")
 		time.Sleep(time.Second * 1)
 		return g, aiMove(&g)
 	case aiFinishedTurn:
