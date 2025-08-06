@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"time"
@@ -29,6 +30,7 @@ type Game struct {
 	trump       Suit
 }
 
+// TODO: Use;
 const (
 	size   = 3
 	yellow = "#FF9E3B"
@@ -41,6 +43,7 @@ const (
 )
 
 func initialGame() Game {
+	log.Println("Initializing game...")
 	deck := NewDeck()
 	ShuffleDeck(deck)
 
@@ -92,8 +95,8 @@ func (g *Game) FromBoard(b *Board) {
 
 func aiMove(g *Game) tea.Cmd {
 	return func() tea.Msg {
-		board := g.ToBoard()
-		updatedBoard := g.engine.HandleAITurn(board)
+		board := g.ToBoard()                         // convert game state to board
+		updatedBoard := g.engine.HandleAITurn(board) // passing in a copy of the board
 		g.FromBoard(updatedBoard)
 
 		isover, win := g.engine.CheckGameOver(g.ToBoard(), Move{})
@@ -132,14 +135,15 @@ func (g Game) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case " ", "enter":
 			// Player attacks
-			if g.turn == 0 && len(g.table) == 0 {
+			if g.turn == 0 {
 				if len(g.player1Hand) > 0 {
 					card := g.player1Hand[g.cursor]
 					g.table = append(g.table, card)
-					g.player1Hand = append(g.player1Hand[:g.cursor], g.player1Hand[g.cursor+1:]...)
+					g.player1Hand = append(g.player1Hand[:g.cursor], g.player1Hand[g.cursor+1:]...) // remove from hand
 					if g.cursor >= len(g.player1Hand) && len(g.player1Hand) > 0 {
-						g.cursor = len(g.player1Hand) - 1
+						g.cursor = len(g.player1Hand) - 1 // extra check
 					}
+					// pass turn to AI
 					return g, func() tea.Msg { return passTurnToAI{} }
 				}
 			}
@@ -217,10 +221,18 @@ func (g Game) View() string {
 }
 
 func main() {
+	// Logging
+	f, err := LogToFile("debug.log", "debug")
+	if err != nil {
+		fmt.Println("fatal:", err)
+		os.Exit(1)
+	}
+	defer f.Close()
+
+	// Game
 	p := tea.NewProgram(initialGame())
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
 	}
 }
-
