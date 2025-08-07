@@ -15,6 +15,7 @@ const (
 	Spades
 )
 
+// String returns the the unicode representation of the card suit.
 func (s Suit) String() string {
 	switch s {
 	case Clubs:
@@ -48,6 +49,7 @@ const (
 	Ace
 )
 
+// String returns the the unicode representation of the card rank.
 func (r Rank) String() string {
 	switch r {
 	case Two:
@@ -86,10 +88,12 @@ type Card struct {
 	Rank Rank
 }
 
+// String returns the the unicode representation of the card.
 func (c Card) String() string {
 	return fmt.Sprintf("%s%s", c.Rank, c.Suit)
 }
 
+// NewDeck returns a unshuffled deck of cards
 func NewDeck() []Card {
 	cards := make([]Card, 0, 52)
 	for suit := Clubs; suit <= Spades; suit++ {
@@ -100,6 +104,7 @@ func NewDeck() []Card {
 	return cards
 }
 
+// ShuffleDeck shuffles a deck of cards.
 func ShuffleDeck(cards []Card) {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	r.Shuffle(len(cards), func(i, j int) {

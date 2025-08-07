@@ -2,34 +2,38 @@ package main
 
 import "log"
 
-// NOTE: The following types are assumed to be defined in card.go
-// type Card struct { Suit Suit; Rank Rank }
-// type Suit int
-// type Rank int
-// type Player int // 0 for player, 1 for AI
-
-// Move represents a game move.
 type Move struct {
-	Card   Card
-	IsPass bool // True to pass/take cards
+	Card []Card
+	take bool
 }
-
-// Board represents the game state for the engine.
-type Board struct {
+type Deck struct {
+	Cards []Card
+	trump Suit
+}
+type Engine struct {
 	PlayerHand   []Card
 	OpponentHand []Card
-	Table        []Card
+	Table        []TableCards
 	Deck         []Card
 	TrumpSuit    Suit
 	Attacker     Player
 }
 
-func (b *Board) Copy() *Board {
-	newB := &Board{
+// type GameEngine interface {
+// }
+
+func NewEngine() *Engine {
+	engine := &Engine{}
+	return engine
+}
+
+// Copy retuurns a copy of the board for easy modification
+func (b *Engine) Copy() *Engine {
+	newB := &Engine{
 		PlayerHand:   make([]Card, len(b.PlayerHand)),
 		OpponentHand: make([]Card, len(b.OpponentHand)),
 		Deck:         make([]Card, len(b.Deck)),
-		Table:        make([]Card, len(b.Table)),
+		Table:        make([]TableCards, len(b.Table)),
 		TrumpSuit:    b.TrumpSuit,
 		Attacker:     b.Attacker,
 	}
@@ -40,45 +44,35 @@ func (b *Board) Copy() *Board {
 	return newB
 }
 
-// PlayMove is used by the MCTS algorithm to simulate moves.
-func (b *Board) PlayMove(move Move) {
-	// This is a simplified simulation for the AI.
-	// A real implementation would be more complex.
-	if !move.IsPass {
-		b.Table = append(b.Table, move.Card)
-	}
+func (e *Engine) AITurn() {
+	mcts := NewMCTS(e.Clone())
+	bestMove := mcts.Search(1000) // 1000 iterations, for example
+	e.MakeMove(bestMove)
 }
 
-type Engine struct {
-	ai AI
-}
-
-func NewEngine(depth int) *Engine {
-	engine := &Engine{}
-	mcts := NewMCTS(engine, depth)
-	engine.ai = mcts
-	return engine
-}
-
-// HandleAITurn processes the AI's entire turn, whether attacking or defending.
-// Get's Handed a copy of the board.
-func (e *Engine) HandleAITurn(board *Board) *Board {
+// It copies the board and hands it to the GameEngine for simulation, then returns an updated board.
+func (e *GameEngine) HandleAITurn(board *Board) *Board {
 	log.Printf("Current board in AI turn: %%#v: %#v\n", board)
 	if board.Attacker == 1 { // AI is Attacker
-		log.Println("Ai is attacking...")
-		move := e.ai.Solve(board.Copy()) // AI decides what card to attack with
+		log.Println("Ai is deciding attacking...")
+		move := e.ai.Solve(board.Copy())
+		log.Printf("Ai decided to attack with %s\n", move)
 		if !move.IsPass {
 			board.Table = append(board.Table, move.Card)
 			board.OpponentHand = removeCard(board.OpponentHand, move.Card)
+		} else {
+			// If Pass then take cards from the Table
+			board.OpponentHand = append(board.OpponentHand, board.Table...)
+			board.Table = []Card{}
 		}
-	} else { // AI is Defender
+	} else {
 		log.Println("Ai is defending...")
-		move := e.ai.Solve(board.Copy()) // AI decides to defend or take
+		move := e.ai.Solve(board.Copy())
 		if move.IsPass {
 			board.OpponentHand = append(board.OpponentHand, board.Table...)
 			board.Table = []Card{}
 		} else {
-			// AI plays a defending card
+			log.Printf("Ai decided to defend with %s\n", move)
 			attackingCard := board.Table[len(board.Table)-1]
 			if e.CanBeat(attackingCard, move.Card, board.TrumpSuit) {
 				board.Table = append(board.Table, move.Card)
@@ -131,8 +125,7 @@ func (e *Engine) GetOpponent(player Player) Player {
 	}
 	return 0
 }
-
-func (e *Engine) CheckGameOver(board *Board, move Move) (bool, Player) {
+func (e *Engine) CheckGameOver(board *Board) (bool, Player) {
 	if len(board.Deck) == 0 {
 		if len(board.PlayerHand) == 0 && len(board.OpponentHand) == 0 {
 			return true, -1 // Draw
@@ -145,6 +138,12 @@ func (e *Engine) CheckGameOver(board *Board, move Move) (bool, Player) {
 		}
 	}
 	return false, -1
+}
+func (e *Engine) GetLegalMoves(board *Board) []Move {
+	var moves []Move
+	for _, card := range board.Table {
+
+	}
 }
 
 // removeCard is a helper function to remove a card from a hand.

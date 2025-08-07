@@ -11,23 +11,31 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-type Table struct {
+type TableCards struct {
 	Attack  Card
 	Defense Card
 }
-type Player int // 0 = player 1 = Computer
+type Player int
+
+// This Struct is the display state.
 type Game struct {
-	deck        []Card
 	player1Hand []Card
 	player2Hand []Card
-	table       []Card
+	table       []TableCards
 	engine      *Engine
 	cursor      int
 	winner      Player
-	turn        Player // Who is the attacker
+	turn        Player
 	gameover    bool
 	colors      map[string]lipgloss.Style
 	trump       Suit
+}
+type Board struct {
+	PlayerHand   []Card
+	OpponentHand []Card
+	Table        []TableCards
+	TrumpSuit    Suit
+	Attacker     Player
 }
 
 // TODO: Use;
@@ -42,6 +50,8 @@ const (
 	blue   = "#7E9CD8"
 )
 
+// Initialize Game Shuffles the deck, creates the player's hand
+// Creates the Opponent's Hand and Creates the Game Struct
 func initialGame() Game {
 	log.Println("Initializing game...")
 	deck := NewDeck()
@@ -56,40 +66,41 @@ func initialGame() Game {
 	deck = deck[6:]
 
 	return Game{
-		deck:        deck,
 		player1Hand: player1Hand,
 		player2Hand: player2Hand,
-		table:       []Card{},
+		table:       []TableCards{},
 		cursor:      0,
-		engine:      NewEngine(1000),
+		engine:      NewEngine(),
 		turn:        0, // Player starts as attacker
 		trump:       trumpCard.Suit,
 	}
 }
 
+// Tea Init
 func (g Game) Init() tea.Cmd {
 	return tea.SetWindowTitle("Durak")
 }
 
+// Communication Between Engine and Player
 type passTurnToAI struct{}
 type aiFinishedTurn struct{}
 
+// Create a simple board to pass to the Engine.
 func (g *Game) ToBoard() *Board {
 	return &Board{
 		PlayerHand:   g.player1Hand,
 		OpponentHand: g.player2Hand,
 		Table:        g.table,
-		Deck:         g.deck,
 		TrumpSuit:    g.trump,
 		Attacker:     g.turn,
 	}
 }
 
+// FromBoard Updates the game state from the board
 func (g *Game) FromBoard(b *Board) {
 	g.player1Hand = b.PlayerHand
 	g.player2Hand = b.OpponentHand
 	g.table = b.Table
-	g.deck = b.Deck
 	g.turn = b.Attacker
 }
 
@@ -99,18 +110,15 @@ func aiMove(g *Game) tea.Cmd {
 		log.Printf("Current board: %%#v: %#v\n", board)
 		updatedBoard := g.engine.HandleAITurn(board) // passing in a copy of the board
 		g.FromBoard(updatedBoard)
-
-		isover, win := g.engine.CheckGameOver(g.ToBoard(), Move{})
+		isover, win := g.engine.CheckGameOver(g.ToBoard())
 		if isover {
 			g.gameover = true
 			g.winner = win
 		}
-
 		// If AI is now the attacker, it needs to make another move (an attack).
 		if g.turn == 1 && len(g.table) == 0 {
 			return passTurnToAI{}
 		}
-
 		return aiFinishedTurn{}
 	}
 }
