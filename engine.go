@@ -19,27 +19,22 @@ type Engine struct {
 	Attacker     Player
 }
 
-// type GameEngine interface {
-// }
-
 func NewEngine() *Engine {
 	engine := &Engine{}
 	return engine
 }
 
 // Copy retuurns a copy of the board for easy modification
-func (b *Engine) Copy() *Engine {
-	newB := &Engine{
+func (b *Board) Copy() *Board {
+	newB := &Board{
 		PlayerHand:   make([]Card, len(b.PlayerHand)),
 		OpponentHand: make([]Card, len(b.OpponentHand)),
-		Deck:         make([]Card, len(b.Deck)),
 		Table:        make([]TableCards, len(b.Table)),
 		TrumpSuit:    b.TrumpSuit,
 		Attacker:     b.Attacker,
 	}
 	copy(newB.PlayerHand, b.PlayerHand)
 	copy(newB.OpponentHand, b.OpponentHand)
-	copy(newB.Deck, b.Deck)
 	copy(newB.Table, b.Table)
 	return newB
 }
@@ -51,11 +46,11 @@ func (e *Engine) AITurn() {
 }
 
 // It copies the board and hands it to the GameEngine for simulation, then returns an updated board.
-func (e *GameEngine) HandleAITurn(board *Board) *Board {
+func (e *Engine) HandleAITurn(board *Board) *Board {
 	log.Printf("Current board in AI turn: %%#v: %#v\n", board)
 	if board.Attacker == 1 { // AI is Attacker
 		log.Println("Ai is deciding attacking...")
-		move := e.ai.Solve(board.Copy())
+		move := e.Ai.Solve(board.Copy())
 		log.Printf("Ai decided to attack with %s\n", move)
 		if !move.IsPass {
 			board.Table = append(board.Table, move.Card)
@@ -125,6 +120,7 @@ func (e *Engine) GetOpponent(player Player) Player {
 	}
 	return 0
 }
+
 func (e *Engine) CheckGameOver(board *Board) (bool, Player) {
 	if len(board.Deck) == 0 {
 		if len(board.PlayerHand) == 0 && len(board.OpponentHand) == 0 {
@@ -138,12 +134,6 @@ func (e *Engine) CheckGameOver(board *Board) (bool, Player) {
 		}
 	}
 	return false, -1
-}
-func (e *Engine) GetLegalMoves(board *Board) []Move {
-	var moves []Move
-	for _, card := range board.Table {
-
-	}
 }
 
 // removeCard is a helper function to remove a card from a hand.

@@ -104,6 +104,7 @@ func (g *Game) FromBoard(b *Board) {
 	g.turn = b.Attacker
 }
 
+// Called after passTurnToAI
 func aiMove(g *Game) tea.Cmd {
 	return func() tea.Msg {
 		board := g.ToBoard() // convert game state to board
@@ -123,6 +124,7 @@ func aiMove(g *Game) tea.Cmd {
 	}
 }
 
+// Main Logic Update function
 func (g Game) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case passTurnToAI:
