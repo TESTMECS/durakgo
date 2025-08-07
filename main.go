@@ -12,8 +12,7 @@ import (
 )
 
 type TableCards struct {
-	Attack  Card
-	Defense Card
+	c Card
 }
 type Player int
 
@@ -29,6 +28,7 @@ type Game struct {
 	gameover    bool
 	colors      map[string]lipgloss.Style
 	trump       Suit
+	deck        []Card
 }
 type Board struct {
 	PlayerHand   []Card
@@ -36,6 +36,7 @@ type Board struct {
 	Table        []TableCards
 	TrumpSuit    Suit
 	Attacker     Player
+	Deck         []Card
 }
 
 // TODO: Use;
@@ -73,6 +74,7 @@ func initialGame() Game {
 		engine:      NewEngine(),
 		turn:        0, // Player starts as attacker
 		trump:       trumpCard.Suit,
+		deck:        deck,
 	}
 }
 
@@ -93,6 +95,7 @@ func (g *Game) ToBoard() *Board {
 		Table:        g.table,
 		TrumpSuit:    g.trump,
 		Attacker:     g.turn,
+		Deck:         g.deck,
 	}
 }
 
@@ -102,15 +105,15 @@ func (g *Game) FromBoard(b *Board) {
 	g.player2Hand = b.OpponentHand
 	g.table = b.Table
 	g.turn = b.Attacker
+	g.deck = b.Deck
 }
 
 // Called after passTurnToAI
 func aiMove(g *Game) tea.Cmd {
 	return func() tea.Msg {
-		board := g.ToBoard() // convert game state to board
-		log.Printf("Current board: %%#v: %#v\n", board)
-		updatedBoard := g.engine.HandleAITurn(board) // passing in a copy of the board
-		g.FromBoard(updatedBoard)
+		board := g.ToBoard()   // convert game state to board
+		g.engine.AITurn(board) // passing in a copy of the board
+		g.FromBoard(board)
 		isover, win := g.engine.CheckGameOver(g.ToBoard())
 		if isover {
 			g.gameover = true
@@ -150,11 +153,12 @@ func (g Game) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if g.turn == 0 {
 				if len(g.player1Hand) > 0 {
 					card := g.player1Hand[g.cursor]
-					g.table = append(g.table, card)
-					g.player1Hand = append(g.player1Hand[:g.cursor], g.player1Hand[g.cursor+1:]...) // remove from hand
+					g.table = append(g.table, TableCards{c: card})
+					g.player1Hand = append(g.player1Hand[:g.cursor], g.player1Hand[g.cursor+1:]...)
 					if g.cursor >= len(g.player1Hand) && len(g.player1Hand) > 0 {
-						g.cursor = len(g.player1Hand) - 1 // extra check
+						g.cursor = len(g.player1Hand) - 1
 					}
+					g.turn = 1
 					// pass turn to AI
 					return g, func() tea.Msg { return passTurnToAI{} }
 				}
@@ -162,6 +166,14 @@ func (g Game) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	}
 	return g, nil
+}
+
+func extractCards(table []TableCards) []Card {
+	cards := make([]Card, len(table))
+	for i, tc := range table {
+		cards[i] = tc.c
+	}
+	return cards
 }
 
 // renderCards renders cards side-by-side, highlighting the selected card.
@@ -212,7 +224,7 @@ func (g Game) View() string {
 	if len(g.table) == 0 {
 		s.WriteString("[empty]\n")
 	} else {
-		s.WriteString(renderCards(g.table, -1, false)) // No cursor for table
+		s.WriteString(renderCards(extractCards(g.table), -1, false)) // No cursor for table
 	}
 	s.WriteString("\n\n")
 
@@ -248,3 +260,4 @@ func main() {
 		os.Exit(1)
 	}
 }
+

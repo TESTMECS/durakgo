@@ -1,29 +1,23 @@
 package main
 
 import (
-	"fmt"
-	"math"
+	"log"
 	"math/rand/v2"
 )
 
-const (
-	C_VALUE = 1.41
-	DEPTH   = 100
-)
-
 type AI interface {
-	Solve(board *Board) int
+	Solve(board *Board) Move
 }
 
 type GameEngine interface {
 	// Returns gameover (bool) & a value if there's a winner
-	CheckGameOver(board *Board, lastMove int) (bool, int)
+	CheckGameOver(board *Board) (bool, Player)
 	// Get all available moves
-	GetLegalMoves(board *Board) []int
-	// Get the opponent of a player
-	GetOpponent(player int) int
+	GetLegalMoves(board *Board) []Move
 	// Play a move on the board
-	PlayMove(board *Board, player int, move int) error
+	PlayMove(board *Board, move Move)
+	// Check if a move is valid
+	CanBeat(attack Card, defense Card, trump Suit) bool
 }
 
 type mcts struct {
@@ -35,182 +29,89 @@ func NewMCTS(engine GameEngine, depth int) AI {
 	return &mcts{engine, depth}
 }
 
-func (m *mcts) Solve(board *Board) int {
-	root := newNode(m.engine, board, -1, nil)
-
-	for i := 0; i < m.depth; i++ {
-		node := root
-		for node.isExpanded() {
-			child, err := node.selectChild()
-			if err != nil {
-				panic(err)
-			}
-			node = child
-		}
-
-		isOver, value := m.engine.CheckGameOver(node.board, node.move)
-		value = m.engine.GetOpponent(value)
-
-		if !isOver {
-			child, err := node.expand()
-			if err != nil {
-			} else {
-				value = child.simulate()
-				node = child
-			}
-		}
-
-		node.backpropagate(value)
-	}
-
-	visits := make([]float64, board.Size*board.Size)
-	dist := make([]float64, board.Size*board.Size)
-	sum := 0.0
-
-	for _, child := range root.children {
-		visits[child.move] = float64(child.visitCount)
-		sum += visits[child.move]
-	}
-
-	for i, visit := range visits {
-		dist[i] = visit / sum
-	}
-
-	bestMove := -1
-	bestValue := 0.0
-
-	for i, value := range dist {
-		if value > bestValue {
-			bestMove = i
-			bestValue = value
-		}
-	}
-
-	return bestMove
-}
-
-type node struct {
-	engine     GameEngine
-	board      *Board
-	move       int
-	parent     *node
-	children   []*node
-	legalMoves []int
-	valueSum   int
-	visitCount int
-}
-
-func newNode(engine GameEngine, board *Board, move int, parent *node) *node {
-	legalMoves := engine.GetLegalMoves(board)
-
-	return &node{
-		engine:     engine,
-		board:      board,
-		move:       move,
-		parent:     parent,
-		children:   []*node{},
-		legalMoves: legalMoves,
-		valueSum:   0,
-		visitCount: 0,
-	}
-}
-
-// Simulate all moves until game is over;
-// Returns winner
-func (n *node) simulate() int {
-	isOver, winner := n.engine.CheckGameOver(n.board, n.move)
-	if isOver {
-		return n.engine.GetOpponent(winner)
-	}
-
-	board := n.board.Copy()
-	player := P1
-	result := 0
-
-	for {
-		move, _, err := popRandomMove(n.engine.GetLegalMoves(board))
-		if err != nil {
-			break
-		}
-
-		n.engine.PlayMove(board, player, move)
-		isOver, winner = n.engine.CheckGameOver(board, move)
-		if isOver {
-			result = winner
-			break
-		}
-
-		player = n.engine.GetOpponent(player)
-	}
-
-	return result
-}
-
-func (n *node) expand() (*node, error) {
-	move, rest, err := popRandomMove(n.legalMoves)
-	if err != nil {
-		return nil, err
-	}
-
-	n.legalMoves = rest
-
-	board := n.board.Copy()
-	n.engine.PlayMove(board, P1, move)
-
-	// Every node considers itself as p1
-	board.ChangePerspective()
-	child := newNode(n.engine, board, move, n)
-	n.children = append(n.children, child)
-
-	return child, nil
-}
-
-func (n *node) backpropagate(value int) {
-	n.visitCount++
-	n.valueSum += value
-
-	if n.parent != nil {
-		n.parent.backpropagate(n.engine.GetOpponent(value))
-	}
-}
-
-// Get next child with highest UCB
-func (n *node) selectChild() (*node, error) {
-	if len(n.children) == 0 {
-		return nil, fmt.Errorf("No child nodes")
-	}
-
-	var selected *node
-	var bestValue float64 = math.Inf(-1)
-
-	for _, child := range n.children {
-		ucb := n.getUCB(child)
-		if selected == nil || ucb > bestValue {
-			selected = child
-			bestValue = ucb
-		}
-	}
-
-	return selected, nil
-}
-
-func popRandomMove(legalMoves []int) (int, []int, error) {
+func (m *mcts) Solve(board *Board) Move {
+	legalMoves := m.engine.GetLegalMoves(board)
+	log.Println("Legal moves:", legalMoves)
 	if len(legalMoves) == 0 {
-		return -1, legalMoves, fmt.Errorf("No legal moves")
+		return Move{take: true}
+	}
+	if legalMoves[0].Card != nil {
+		return legalMoves[0]
+	}
+	// Return a random move from the list of legal moves.
+	return legalMoves[rand.IntN(len(legalMoves))]
+}
+
+func (e *mcts) CheckGameOver(board *Board) (bool, Player) {
+	if len(board.Deck) == 0 {
+		if len(board.PlayerHand) == 0 && len(board.OpponentHand) == 0 {
+			return true, -1 // Draw
+		}
+		if len(board.PlayerHand) == 0 {
+			return true, 0 // Player wins
+		}
+		if len(board.OpponentHand) == 0 {
+			return true, 1 // AI wins
+		}
+	}
+	return false, -1
+}
+
+// Logic for Moves
+// Checks table and own hand.
+func (m *mcts) GetLegalMoves(board *Board) []Move {
+	var moves []Move
+	var hand []Card
+	if board.Attacker == 0 {
+		hand = board.PlayerHand
+	} else {
+		hand = board.OpponentHand
+	}
+	if board.Attacker == 1 { // AI is Attacker
+		if len(board.Table) == 0 {
+			// Can play any card
+			for _, card := range hand {
+				moves = append(moves, Move{Card: []Card{card}})
+			}
+		} else {
+			// Can add any card with the same rank as cards on the table
+			tableRanks := make(map[Rank]bool)
+			for _, tableCard := range board.Table {
+				tableRanks[tableCard.c.Rank] = true
+			}
+			for _, card := range hand {
+				if tableRanks[card.Rank] {
+					moves = append(moves, Move{Card: []Card{card}})
+				}
+			}
+		}
+		// "take" move is to pass
+		moves = append(moves, Move{take: true})
+	} else { // AI is Defender
+		if len(board.Table) > 0 {
+			attackingCard := board.Table[len(board.Table)-1].c
+			for _, card := range hand {
+				if m.CanBeat(attackingCard, card, board.TrumpSuit) {
+					moves = append(moves, Move{Card: []Card{card}})
+				}
+			}
+		}
+		// "take" move is to take cards
+		moves = append(moves, Move{take: true})
 	}
 
-	index := rand.IntN(len(legalMoves))
-	move := legalMoves[index]
-	legalMoves = append(legalMoves[:index], legalMoves[index+1:]...)
+	return moves
+}
+func (m *mcts) PlayMove(board *Board, move Move) {}
 
-	return move, legalMoves, nil
+// CanBeat checks if a defending card can beat an attacking card.
+func (e *mcts) CanBeat(attack Card, defense Card, trump Suit) bool {
+	if attack.Suit == defense.Suit {
+		return defense.Rank > attack.Rank
+	}
+	if defense.Suit == trump {
+		return attack.Suit != trump
+	}
+	return false
 }
 
-func (n *node) isExpanded() bool {
-	return len(n.children) > 0 && len(n.legalMoves) == 0
-}
-
-func (n *node) getUCB(child *node) float64 {
-	q := 1 - ((float64(child.valueSum)/float64(child.visitCount))+1)/2
-	return q + C_VALUE*math.Sqrt(math.Log(float64(n.visitCount))/float64(child.visitCount))
-}

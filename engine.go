@@ -17,14 +17,16 @@ type Engine struct {
 	Deck         []Card
 	TrumpSuit    Suit
 	Attacker     Player
+	AI           AI
 }
 
 func NewEngine() *Engine {
 	engine := &Engine{}
+	engine.AI = NewMCTS(engine, 1000)
 	return engine
 }
 
-// Copy retuurns a copy of the board for easy modification
+// Copy returns a copy of the board for easy modification
 func (b *Board) Copy() *Board {
 	newB := &Board{
 		PlayerHand:   make([]Card, len(b.PlayerHand)),
@@ -32,59 +34,67 @@ func (b *Board) Copy() *Board {
 		Table:        make([]TableCards, len(b.Table)),
 		TrumpSuit:    b.TrumpSuit,
 		Attacker:     b.Attacker,
+		Deck:         make([]Card, len(b.Deck)),
 	}
 	copy(newB.PlayerHand, b.PlayerHand)
 	copy(newB.OpponentHand, b.OpponentHand)
 	copy(newB.Table, b.Table)
+	copy(newB.Deck, b.Deck)
 	return newB
 }
 
-func (e *Engine) AITurn() {
-	mcts := NewMCTS(e.Clone())
-	bestMove := mcts.Search(1000) // 1000 iterations, for example
-	e.MakeMove(bestMove)
+func (e *Engine) AITurn(board *Board) {
+	bestMove := e.AI.Solve(board.Copy())
+	log.Println("AI Move:", bestMove)
+	e.PlayMove(board, bestMove)
 }
 
-// It copies the board and hands it to the GameEngine for simulation, then returns an updated board.
-func (e *Engine) HandleAITurn(board *Board) *Board {
-	log.Printf("Current board in AI turn: %%#v: %#v\n", board)
-	if board.Attacker == 1 { // AI is Attacker
-		log.Println("Ai is deciding attacking...")
-		move := e.Ai.Solve(board.Copy())
-		log.Printf("Ai decided to attack with %s\n", move)
-		if !move.IsPass {
-			board.Table = append(board.Table, move.Card)
-			board.OpponentHand = removeCard(board.OpponentHand, move.Card)
-		} else {
-			// If Pass then take cards from the Table
-			board.OpponentHand = append(board.OpponentHand, board.Table...)
-			board.Table = []Card{}
-		}
+// GetLegalMoves returns all legal moves for the current player.
+func (e *Engine) GetLegalMoves(board *Board) []Move {
+	var moves []Move
+	var hand []Card
+	if board.Attacker == 0 {
+		hand = board.PlayerHand
 	} else {
-		log.Println("Ai is defending...")
-		move := e.ai.Solve(board.Copy())
-		if move.IsPass {
-			board.OpponentHand = append(board.OpponentHand, board.Table...)
-			board.Table = []Card{}
-		} else {
-			log.Printf("Ai decided to defend with %s\n", move)
-			attackingCard := board.Table[len(board.Table)-1]
-			if e.CanBeat(attackingCard, move.Card, board.TrumpSuit) {
-				board.Table = append(board.Table, move.Card)
-				board.OpponentHand = removeCard(board.OpponentHand, move.Card)
+		hand = board.OpponentHand
+	}
 
-				// Successful defense, round ends.
-				board.Table = []Card{}                         // Discard cards
-				board.Attacker = e.GetOpponent(board.Attacker) // AI becomes attacker
-			} else {
-				// Invalid move from AI, treat as taking cards.
-				board.OpponentHand = append(board.OpponentHand, board.Table...)
-				board.Table = []Card{}
+	if board.Attacker == 1 { // AI is Attacker
+		// Attacking moves
+		if len(board.Table) == 0 {
+			// Can play any card
+			for _, card := range hand {
+				moves = append(moves, Move{Card: []Card{card}})
+			}
+		} else {
+			// Can add any card with the same rank as cards on the table
+			tableRanks := make(map[Rank]bool)
+			for _, tableCard := range board.Table {
+				tableRanks[tableCard.c.Rank] = true
+			}
+			for _, card := range hand {
+				if tableRanks[card.Rank] {
+					moves = append(moves, Move{Card: []Card{card}})
+				}
 			}
 		}
-		e.DrawCards(board)
+		// "take" move is to pass
+		moves = append(moves, Move{take: true})
+	} else { // AI is Defender
+		// Defending moves
+		if len(board.Table) > 0 {
+			attackingCard := board.Table[len(board.Table)-1].c
+			for _, card := range hand {
+				if e.CanBeat(attackingCard, card, board.TrumpSuit) {
+					moves = append(moves, Move{Card: []Card{card}})
+				}
+			}
+		}
+		// "take" move is to take cards
+		moves = append(moves, Move{take: true})
 	}
-	return board
+
+	return moves
 }
 
 // CanBeat checks if a defending card can beat an attacking card.
@@ -111,7 +121,42 @@ func (e *Engine) DrawCards(board *Board) {
 }
 
 func (e *Engine) PlayMove(board *Board, move Move) {
-	board.PlayMove(move)
+	if move.take {
+		if board.Attacker == 1 { // AI is attacker and passes
+			board.Attacker = e.GetOpponent(board.Attacker)
+		} else { // AI is defender and takes
+			if len(board.Table) > 0 {
+				board.OpponentHand = append(board.OpponentHand, board.Table[len(board.Table)-1].c)
+				board.Table = []TableCards{}
+			}
+		}
+		e.DrawCards(board)
+		return
+	}
+
+	card := move.Card[0]
+	if board.Attacker == 1 { // AI is Attacker
+		board.Table = append(board.Table, TableCards{c: card})
+		board.OpponentHand = removeCard(board.OpponentHand, card)
+		board.Attacker = e.GetOpponent(board.Attacker)
+	} else { // AI is Defender
+		if len(board.Table) > 0 {
+			attackingCard := board.Table[len(board.Table)-1].c
+			if e.CanBeat(attackingCard, card, board.TrumpSuit) {
+				board.Table = append(board.Table, TableCards{c: card})
+				board.OpponentHand = removeCard(board.OpponentHand, card)
+				// Successful defense, round ends.
+				board.Table = []TableCards{}
+				e.DrawCards(board)
+				board.Attacker = e.GetOpponent(board.Attacker) // AI becomes attacker
+			} else {
+				// Invalid move, treat as taking cards.
+				board.OpponentHand = append(board.OpponentHand, board.Table[len(board.Table)-1].c)
+				board.Table = []TableCards{}
+				e.DrawCards(board)
+			}
+		}
+	}
 }
 
 func (e *Engine) GetOpponent(player Player) Player {
