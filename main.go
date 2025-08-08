@@ -121,11 +121,7 @@ func aiMove(g *Game) tea.Cmd {
 			g.gameover = true
 			g.winner = win
 		} else {
-			// After AI move, it's player's turn, unless AI is the new attacker on an empty board
-			if g.attacker == 1 && len(g.table) == 0 {
-				g.turn = 1
-				return passTurnToAI{}
-			}
+			// After AI move, it's player's turn
 			g.turn = 0
 		}
 		return aiFinishedTurn{}
@@ -212,13 +208,22 @@ func (g *Game) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						attackingCard := g.table[len(g.table)-1].c
 						defendingCard := g.player1Hand[g.cursor]
 						if g.engine.CanBeat(attackingCard, defendingCard, g.trump) {
-							g.table = append(g.table, TableCards{c: defendingCard})
+							// Player defends successfully, round ends.
+							g.table = []TableCards{}
 							g.player1Hand = append(g.player1Hand[:g.cursor], g.player1Hand[g.cursor+1:]...)
 							if g.cursor >= len(g.player1Hand) && len(g.player1Hand) > 0 {
 								g.cursor = len(g.player1Hand) - 1
 							}
-							g.turn = 1 // AI's turn to continue attack
-							return g, func() tea.Msg { return passTurnToAI{} }
+
+							board := g.ToBoard()
+							board.PlayerHand = g.player1Hand
+							board.Table = g.table
+							g.engine.DrawCards(board)
+							g.FromBoard(board)
+
+							g.attacker = 0 // Player becomes the new attacker
+							g.turn = 0     // It's player's turn to attack
+							return g, nil
 						}
 					}
 				}

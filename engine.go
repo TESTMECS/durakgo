@@ -136,7 +136,7 @@ func (e *Engine) PlayMove(board *Board, move Move) {
 	if board.Attacker == 1 { // AI is Attacker
 		board.Table = append(board.Table, TableCards{c: card})
 		board.OpponentHand = removeCard(board.OpponentHand, card)
-		board.Attacker = e.GetOpponent(board.Attacker)
+		// Attacker does not change, turn passes to player to defend.
 	} else { // AI is Defender
 		if len(board.Table) > 0 {
 			attackingCard := board.Table[len(board.Table)-1].c
