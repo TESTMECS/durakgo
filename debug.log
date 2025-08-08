@@ -543,3 +543,327 @@ debug 2025/08/08 11:42:29 AI Turn Start: Attacker 1, Player Hand [5♣ 3♠ 9♠
 debug 2025/08/08 11:42:29 AI Move: {[A♥] false}
 debug 2025/08/08 11:42:29 Board state after AITurn: Attacker 1, Player Hand [5♣ 3♠ 9♠ Q♣ 4♣ A♣ A♥ A♥ 10♠], AI Hand [], Table [{{2 14}}]
 debug 2025/08/08 11:42:29 Game state after FromBoard: Attacker 1, Player Hand [5♣ 3♠ 9♠ Q♣ 4♣ A♣ A♥ A♥ 10♠], AI Hand [], Table [{{2 14}}]
+debug 2025/08/08 15:21:04 Initializing game...
+debug 2025/08/08 15:21:32 Initializing game...
+debug 2025/08/08 15:21:38 Ai turn in progress...
+debug 2025/08/08 15:21:39 --- AI Turn ---
+debug 2025/08/08 15:21:39 AI Turn Start: Attacker 0, Player Hand [5♥ 2♥ K♥ 2♦ 3♣], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦], Table [{{2 3}}]
+debug 2025/08/08 15:21:39 AI Move: {[] true}
+debug 2025/08/08 15:21:39 Board state after AITurn: Attacker 0, Player Hand [5♥ 2♥ K♥ 2♦ 3♣ 3♥], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥], Table []
+debug 2025/08/08 15:21:39 Game state after FromBoard: Attacker 0, Player Hand [5♥ 2♥ K♥ 2♦ 3♣ 3♥], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥], Table []
+debug 2025/08/08 15:21:39 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:21:40 Ai turn in progress...
+debug 2025/08/08 15:21:41 --- AI Turn ---
+debug 2025/08/08 15:21:41 AI Turn Start: Attacker 0, Player Hand [5♥ K♥ 2♦ 3♣ 3♥], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥], Table [{{2 2}}]
+debug 2025/08/08 15:21:41 AI Move: {[] true}
+debug 2025/08/08 15:21:41 Board state after AITurn: Attacker 0, Player Hand [5♥ K♥ 2♦ 3♣ 3♥ 2♥], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥], Table []
+debug 2025/08/08 15:21:41 Game state after FromBoard: Attacker 0, Player Hand [5♥ K♥ 2♦ 3♣ 3♥ 2♥], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥], Table []
+debug 2025/08/08 15:21:41 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:21:42 Ai turn in progress...
+debug 2025/08/08 15:21:43 --- AI Turn ---
+debug 2025/08/08 15:21:43 AI Turn Start: Attacker 0, Player Hand [5♥ K♥ 2♦ 3♥ 2♥], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥], Table [{{0 3}}]
+debug 2025/08/08 15:21:43 AI Move: {[] true}
+debug 2025/08/08 15:21:43 Board state after AITurn: Attacker 0, Player Hand [5♥ K♥ 2♦ 3♥ 2♥ 3♣], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥ 3♣], Table []
+debug 2025/08/08 15:21:43 Game state after FromBoard: Attacker 0, Player Hand [5♥ K♥ 2♦ 3♥ 2♥ 3♣], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥ 3♣], Table []
+debug 2025/08/08 15:21:43 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:21:45 Ai turn in progress...
+debug 2025/08/08 15:21:46 --- AI Turn ---
+debug 2025/08/08 15:21:46 AI Turn Start: Attacker 0, Player Hand [K♥ 2♦ 3♥ 2♥ 3♣], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥ 3♣], Table [{{2 5}}]
+debug 2025/08/08 15:21:46 AI Move: {[] true}
+debug 2025/08/08 15:21:46 Board state after AITurn: Attacker 0, Player Hand [K♥ 2♦ 3♥ 2♥ 3♣ 5♥], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥ 3♣ 5♥], Table []
+debug 2025/08/08 15:21:46 Game state after FromBoard: Attacker 0, Player Hand [K♥ 2♦ 3♥ 2♥ 3♣ 5♥], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥ 3♣ 5♥], Table []
+debug 2025/08/08 15:21:46 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:21:47 Ai turn in progress...
+debug 2025/08/08 15:21:48 --- AI Turn ---
+debug 2025/08/08 15:21:48 AI Turn Start: Attacker 0, Player Hand [K♥ 3♥ 2♥ 3♣ 5♥], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥ 3♣ 5♥], Table [{{1 2}}]
+debug 2025/08/08 15:21:48 AI Move: {[] true}
+debug 2025/08/08 15:21:48 Board state after AITurn: Attacker 0, Player Hand [K♥ 3♥ 2♥ 3♣ 5♥ 2♦], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥ 3♣ 5♥ 2♦], Table []
+debug 2025/08/08 15:21:48 Game state after FromBoard: Attacker 0, Player Hand [K♥ 3♥ 2♥ 3♣ 5♥ 2♦], AI Hand [J♦ J♣ 4♠ 3♦ 4♥ Q♦ 3♥ 2♥ 3♣ 5♥ 2♦], Table []
+debug 2025/08/08 15:21:48 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:23:34 Initializing game...
+debug 2025/08/08 15:23:37 Ai turn in progress...
+debug 2025/08/08 15:23:38 --- AI Turn ---
+debug 2025/08/08 15:23:38 AI Turn Start: Attacker 0, Player Hand [K♣ 2♣ J♠ Q♦ J♣], AI Hand [4♣ 8♥ 10♥ A♥ A♦ 6♥], Table [{{1 5}}]
+debug 2025/08/08 15:23:38 AI Move: {[10♥] false}
+debug 2025/08/08 15:23:38 Board state after AITurn: Attacker 1, Player Hand [K♣ 2♣ J♠ Q♦ J♣ 9♠], AI Hand [4♣ 8♥ A♥ A♦ 6♥ 5♠], Table []
+debug 2025/08/08 15:23:38 Game state after FromBoard: Attacker 1, Player Hand [K♣ 2♣ J♠ Q♦ J♣ 9♠], AI Hand [4♣ 8♥ A♥ A♦ 6♥ 5♠], Table []
+debug 2025/08/08 15:23:38 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:23:38 Ai turn in progress...
+debug 2025/08/08 15:23:39 --- AI Turn ---
+debug 2025/08/08 15:23:39 AI Turn Start: Attacker 1, Player Hand [K♣ 2♣ J♠ Q♦ J♣ 9♠], AI Hand [4♣ 8♥ A♥ A♦ 6♥ 5♠], Table []
+debug 2025/08/08 15:23:39 AI Move: {[6♥] false}
+debug 2025/08/08 15:23:39 Board state after AITurn: Attacker 1, Player Hand [K♣ 2♣ J♠ Q♦ J♣ 9♠], AI Hand [4♣ 8♥ A♥ A♦ 5♠], Table [{{2 6}}]
+debug 2025/08/08 15:23:39 Game state after FromBoard: Attacker 1, Player Hand [K♣ 2♣ J♠ Q♦ J♣ 9♠], AI Hand [4♣ 8♥ A♥ A♦ 5♠], Table [{{2 6}}]
+debug 2025/08/08 15:23:39 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:23:42 --- Player Defends ---
+debug 2025/08/08 15:23:42 Player Hand Before: [K♣ 2♣ J♠ Q♦ J♣ 9♠]
+debug 2025/08/08 15:23:42 Player Hand After Card Removal: [K♣ 2♣ J♠ J♣ 9♠]
+debug 2025/08/08 15:23:42 Player Hand After Draw (on board): [K♣ 2♣ J♠ J♣ 9♠ 3♠]
+debug 2025/08/08 15:23:42 AI Hand After Draw (on board): [4♣ 8♥ A♥ A♦ 5♠ 10♠]
+debug 2025/08/08 15:23:42 Player Hand After FromBoard: [K♣ 2♣ J♠ J♣ 9♠ 3♠]
+debug 2025/08/08 15:23:42 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:23:47 Ai turn in progress...
+debug 2025/08/08 15:23:48 --- AI Turn ---
+debug 2025/08/08 15:23:48 AI Turn Start: Attacker 0, Player Hand [K♣ 2♣ J♠ J♣ 3♠], AI Hand [4♣ 8♥ A♥ A♦ 5♠ 10♠], Table [{{3 9}}]
+debug 2025/08/08 15:23:48 AI Move: {[A♥] false}
+debug 2025/08/08 15:23:48 Board state after AITurn: Attacker 1, Player Hand [K♣ 2♣ J♠ J♣ 3♠ A♣], AI Hand [4♣ 8♥ A♦ 5♠ 10♠ K♠], Table []
+debug 2025/08/08 15:23:48 Game state after FromBoard: Attacker 1, Player Hand [K♣ 2♣ J♠ J♣ 3♠ A♣], AI Hand [4♣ 8♥ A♦ 5♠ 10♠ K♠], Table []
+debug 2025/08/08 15:23:48 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:23:48 Ai turn in progress...
+debug 2025/08/08 15:23:49 --- AI Turn ---
+debug 2025/08/08 15:23:49 AI Turn Start: Attacker 1, Player Hand [K♣ 2♣ J♠ J♣ 3♠ A♣], AI Hand [4♣ 8♥ A♦ 5♠ 10♠ K♠], Table []
+debug 2025/08/08 15:23:49 AI Move: {[4♣] false}
+debug 2025/08/08 15:23:49 Board state after AITurn: Attacker 1, Player Hand [K♣ 2♣ J♠ J♣ 3♠ A♣], AI Hand [8♥ A♦ 5♠ 10♠ K♠], Table [{{0 4}}]
+debug 2025/08/08 15:23:49 Game state after FromBoard: Attacker 1, Player Hand [K♣ 2♣ J♠ J♣ 3♠ A♣], AI Hand [8♥ A♦ 5♠ 10♠ K♠], Table [{{0 4}}]
+debug 2025/08/08 15:23:49 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:23:52 --- Player Defends ---
+debug 2025/08/08 15:23:52 Player Hand Before: [K♣ 2♣ J♠ J♣ 3♠ A♣]
+debug 2025/08/08 15:23:52 Player Hand After Card Removal: [K♣ 2♣ J♠ 3♠ A♣]
+debug 2025/08/08 15:23:52 Player Hand After Draw (on board): [K♣ 2♣ J♠ 3♠ A♣ 8♠]
+debug 2025/08/08 15:23:52 AI Hand After Draw (on board): [8♥ A♦ 5♠ 10♠ K♠ 6♣]
+debug 2025/08/08 15:23:52 Player Hand After FromBoard: [K♣ 2♣ J♠ 3♠ A♣ 8♠]
+debug 2025/08/08 15:23:52 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:00 Ai turn in progress...
+debug 2025/08/08 15:24:01 --- AI Turn ---
+debug 2025/08/08 15:24:01 AI Turn Start: Attacker 0, Player Hand [2♣ J♠ 3♠ A♣ 8♠], AI Hand [8♥ A♦ 5♠ 10♠ K♠ 6♣], Table [{{0 13}}]
+debug 2025/08/08 15:24:01 AI Move: {[] true}
+debug 2025/08/08 15:24:01 Board state after AITurn: Attacker 0, Player Hand [2♣ J♠ 3♠ A♣ 8♠ 9♥], AI Hand [8♥ A♦ 5♠ 10♠ K♠ 6♣ K♣], Table []
+debug 2025/08/08 15:24:01 Game state after FromBoard: Attacker 0, Player Hand [2♣ J♠ 3♠ A♣ 8♠ 9♥], AI Hand [8♥ A♦ 5♠ 10♠ K♠ 6♣ K♣], Table []
+debug 2025/08/08 15:24:01 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:02 Ai turn in progress...
+debug 2025/08/08 15:24:03 --- AI Turn ---
+debug 2025/08/08 15:24:03 AI Turn Start: Attacker 0, Player Hand [2♣ J♠ A♣ 8♠ 9♥], AI Hand [8♥ A♦ 5♠ 10♠ K♠ 6♣ K♣], Table [{{3 3}}]
+debug 2025/08/08 15:24:03 AI Move: {[8♥] false}
+debug 2025/08/08 15:24:03 Board state after AITurn: Attacker 1, Player Hand [2♣ J♠ A♣ 8♠ 9♥ 6♠], AI Hand [A♦ 5♠ 10♠ K♠ 6♣ K♣], Table []
+debug 2025/08/08 15:24:03 Game state after FromBoard: Attacker 1, Player Hand [2♣ J♠ A♣ 8♠ 9♥ 6♠], AI Hand [A♦ 5♠ 10♠ K♠ 6♣ K♣], Table []
+debug 2025/08/08 15:24:03 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:24:03 Ai turn in progress...
+debug 2025/08/08 15:24:04 --- AI Turn ---
+debug 2025/08/08 15:24:04 AI Turn Start: Attacker 1, Player Hand [2♣ J♠ A♣ 8♠ 9♥ 6♠], AI Hand [A♦ 5♠ 10♠ K♠ 6♣ K♣], Table []
+debug 2025/08/08 15:24:04 AI Move: {[K♣] false}
+debug 2025/08/08 15:24:04 Board state after AITurn: Attacker 1, Player Hand [2♣ J♠ A♣ 8♠ 9♥ 6♠], AI Hand [A♦ 5♠ 10♠ K♠ 6♣], Table [{{0 13}}]
+debug 2025/08/08 15:24:04 Game state after FromBoard: Attacker 1, Player Hand [2♣ J♠ A♣ 8♠ 9♥ 6♠], AI Hand [A♦ 5♠ 10♠ K♠ 6♣], Table [{{0 13}}]
+debug 2025/08/08 15:24:04 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:05 --- Player Defends ---
+debug 2025/08/08 15:24:05 Player Hand Before: [2♣ J♠ A♣ 8♠ 9♥ 6♠]
+debug 2025/08/08 15:24:05 Player Hand After Card Removal: [2♣ J♠ A♣ 8♠ 6♠]
+debug 2025/08/08 15:24:05 Player Hand After Draw (on board): [2♣ J♠ A♣ 8♠ 6♠ 7♣]
+debug 2025/08/08 15:24:05 AI Hand After Draw (on board): [A♦ 5♠ 10♠ K♠ 6♣ 4♥]
+debug 2025/08/08 15:24:05 Player Hand After FromBoard: [2♣ J♠ A♣ 8♠ 6♠ 7♣]
+debug 2025/08/08 15:24:05 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:06 Ai turn in progress...
+debug 2025/08/08 15:24:07 --- AI Turn ---
+debug 2025/08/08 15:24:07 AI Turn Start: Attacker 0, Player Hand [2♣ J♠ A♣ 6♠ 7♣], AI Hand [A♦ 5♠ 10♠ K♠ 6♣ 4♥], Table [{{3 8}}]
+debug 2025/08/08 15:24:07 AI Move: {[10♠] false}
+debug 2025/08/08 15:24:07 Board state after AITurn: Attacker 1, Player Hand [2♣ J♠ A♣ 6♠ 7♣ J♥], AI Hand [A♦ 5♠ K♠ 6♣ 4♥ 5♥], Table []
+debug 2025/08/08 15:24:07 Game state after FromBoard: Attacker 1, Player Hand [2♣ J♠ A♣ 6♠ 7♣ J♥], AI Hand [A♦ 5♠ K♠ 6♣ 4♥ 5♥], Table []
+debug 2025/08/08 15:24:07 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:24:07 Ai turn in progress...
+debug 2025/08/08 15:24:08 --- AI Turn ---
+debug 2025/08/08 15:24:08 AI Turn Start: Attacker 1, Player Hand [2♣ J♠ A♣ 6♠ 7♣ J♥], AI Hand [A♦ 5♠ K♠ 6♣ 4♥ 5♥], Table []
+debug 2025/08/08 15:24:08 AI Move: {[5♠] false}
+debug 2025/08/08 15:24:08 Board state after AITurn: Attacker 1, Player Hand [2♣ J♠ A♣ 6♠ 7♣ J♥], AI Hand [A♦ K♠ 6♣ 4♥ 5♥], Table [{{3 5}}]
+debug 2025/08/08 15:24:08 Game state after FromBoard: Attacker 1, Player Hand [2♣ J♠ A♣ 6♠ 7♣ J♥], AI Hand [A♦ K♠ 6♣ 4♥ 5♥], Table [{{3 5}}]
+debug 2025/08/08 15:24:08 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:08 --- Player Defends ---
+debug 2025/08/08 15:24:08 Player Hand Before: [2♣ J♠ A♣ 6♠ 7♣ J♥]
+debug 2025/08/08 15:24:08 Player Hand After Card Removal: [2♣ A♣ 6♠ 7♣ J♥]
+debug 2025/08/08 15:24:08 Player Hand After Draw (on board): [2♣ A♣ 6♠ 7♣ J♥ 3♦]
+debug 2025/08/08 15:24:08 AI Hand After Draw (on board): [A♦ K♠ 6♣ 4♥ 5♥ 4♦]
+debug 2025/08/08 15:24:08 Player Hand After FromBoard: [2♣ A♣ 6♠ 7♣ J♥ 3♦]
+debug 2025/08/08 15:24:08 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:09 Ai turn in progress...
+debug 2025/08/08 15:24:10 --- AI Turn ---
+debug 2025/08/08 15:24:10 AI Turn Start: Attacker 0, Player Hand [2♣ 6♠ 7♣ J♥ 3♦], AI Hand [A♦ K♠ 6♣ 4♥ 5♥ 4♦], Table [{{0 14}}]
+debug 2025/08/08 15:24:10 AI Move: {[4♥] false}
+debug 2025/08/08 15:24:10 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ 7♣ J♥ 3♦ 7♠], AI Hand [A♦ K♠ 6♣ 5♥ 4♦ A♠], Table []
+debug 2025/08/08 15:24:10 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ 7♣ J♥ 3♦ 7♠], AI Hand [A♦ K♠ 6♣ 5♥ 4♦ A♠], Table []
+debug 2025/08/08 15:24:10 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:24:10 Ai turn in progress...
+debug 2025/08/08 15:24:11 --- AI Turn ---
+debug 2025/08/08 15:24:11 AI Turn Start: Attacker 1, Player Hand [2♣ 6♠ 7♣ J♥ 3♦ 7♠], AI Hand [A♦ K♠ 6♣ 5♥ 4♦ A♠], Table []
+debug 2025/08/08 15:24:11 AI Move: {[6♣] false}
+debug 2025/08/08 15:24:11 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ 7♣ J♥ 3♦ 7♠], AI Hand [A♦ K♠ 5♥ 4♦ A♠], Table [{{0 6}}]
+debug 2025/08/08 15:24:11 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ 7♣ J♥ 3♦ 7♠], AI Hand [A♦ K♠ 5♥ 4♦ A♠], Table [{{0 6}}]
+debug 2025/08/08 15:24:11 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:12 --- Player Defends ---
+debug 2025/08/08 15:24:12 Player Hand Before: [2♣ 6♠ 7♣ J♥ 3♦ 7♠]
+debug 2025/08/08 15:24:12 Player Hand After Card Removal: [2♣ 6♠ J♥ 3♦ 7♠]
+debug 2025/08/08 15:24:12 Player Hand After Draw (on board): [2♣ 6♠ J♥ 3♦ 7♠ 6♦]
+debug 2025/08/08 15:24:12 AI Hand After Draw (on board): [A♦ K♠ 5♥ 4♦ A♠ 3♥]
+debug 2025/08/08 15:24:12 Player Hand After FromBoard: [2♣ 6♠ J♥ 3♦ 7♠ 6♦]
+debug 2025/08/08 15:24:12 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:14 Ai turn in progress...
+debug 2025/08/08 15:24:15 --- AI Turn ---
+debug 2025/08/08 15:24:15 AI Turn Start: Attacker 0, Player Hand [2♣ 6♠ 3♦ 7♠ 6♦], AI Hand [A♦ K♠ 5♥ 4♦ A♠ 3♥], Table [{{2 11}}]
+debug 2025/08/08 15:24:15 AI Move: {[K♠] false}
+debug 2025/08/08 15:24:15 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ 3♦ 7♠ 6♦ Q♠], AI Hand [A♦ 5♥ 4♦ A♠ 3♥ Q♥], Table []
+debug 2025/08/08 15:24:15 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ 3♦ 7♠ 6♦ Q♠], AI Hand [A♦ 5♥ 4♦ A♠ 3♥ Q♥], Table []
+debug 2025/08/08 15:24:15 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:24:15 Ai turn in progress...
+debug 2025/08/08 15:24:16 --- AI Turn ---
+debug 2025/08/08 15:24:16 AI Turn Start: Attacker 1, Player Hand [2♣ 6♠ 3♦ 7♠ 6♦ Q♠], AI Hand [A♦ 5♥ 4♦ A♠ 3♥ Q♥], Table []
+debug 2025/08/08 15:24:16 AI Move: {[Q♥] false}
+debug 2025/08/08 15:24:16 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ 3♦ 7♠ 6♦ Q♠], AI Hand [A♦ 5♥ 4♦ A♠ 3♥], Table [{{2 12}}]
+debug 2025/08/08 15:24:16 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ 3♦ 7♠ 6♦ Q♠], AI Hand [A♦ 5♥ 4♦ A♠ 3♥], Table [{{2 12}}]
+debug 2025/08/08 15:24:16 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:16 --- Player Defends ---
+debug 2025/08/08 15:24:16 Player Hand Before: [2♣ 6♠ 3♦ 7♠ 6♦ Q♠]
+debug 2025/08/08 15:24:16 Player Hand After Card Removal: [2♣ 6♠ 7♠ 6♦ Q♠]
+debug 2025/08/08 15:24:16 Player Hand After Draw (on board): [2♣ 6♠ 7♠ 6♦ Q♠ 7♥]
+debug 2025/08/08 15:24:16 AI Hand After Draw (on board): [A♦ 5♥ 4♦ A♠ 3♥ 3♣]
+debug 2025/08/08 15:24:16 Player Hand After FromBoard: [2♣ 6♠ 7♠ 6♦ Q♠ 7♥]
+debug 2025/08/08 15:24:16 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:17 Ai turn in progress...
+debug 2025/08/08 15:24:18 --- AI Turn ---
+debug 2025/08/08 15:24:18 AI Turn Start: Attacker 0, Player Hand [2♣ 6♠ 6♦ Q♠ 7♥], AI Hand [A♦ 5♥ 4♦ A♠ 3♥ 3♣], Table [{{3 7}}]
+debug 2025/08/08 15:24:18 AI Move: {[] true}
+debug 2025/08/08 15:24:18 Board state after AITurn: Attacker 0, Player Hand [2♣ 6♠ 6♦ Q♠ 7♥ 4♠], AI Hand [A♦ 5♥ 4♦ A♠ 3♥ 3♣ 7♠], Table []
+debug 2025/08/08 15:24:18 Game state after FromBoard: Attacker 0, Player Hand [2♣ 6♠ 6♦ Q♠ 7♥ 4♠], AI Hand [A♦ 5♥ 4♦ A♠ 3♥ 3♣ 7♠], Table []
+debug 2025/08/08 15:24:18 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:19 Ai turn in progress...
+debug 2025/08/08 15:24:20 --- AI Turn ---
+debug 2025/08/08 15:24:20 AI Turn Start: Attacker 0, Player Hand [2♣ 6♠ Q♠ 7♥ 4♠], AI Hand [A♦ 5♥ 4♦ A♠ 3♥ 3♣ 7♠], Table [{{1 6}}]
+debug 2025/08/08 15:24:20 AI Move: {[A♦] false}
+debug 2025/08/08 15:24:20 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ Q♠ 7♥ 4♠ 8♣], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 7♠], Table []
+debug 2025/08/08 15:24:20 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ Q♠ 7♥ 4♠ 8♣], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 7♠], Table []
+debug 2025/08/08 15:24:20 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:24:20 Ai turn in progress...
+debug 2025/08/08 15:24:21 --- AI Turn ---
+debug 2025/08/08 15:24:21 AI Turn Start: Attacker 1, Player Hand [2♣ 6♠ Q♠ 7♥ 4♠ 8♣], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 7♠], Table []
+debug 2025/08/08 15:24:21 AI Move: {[7♠] false}
+debug 2025/08/08 15:24:21 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ Q♠ 7♥ 4♠ 8♣], AI Hand [5♥ 4♦ A♠ 3♥ 3♣], Table [{{3 7}}]
+debug 2025/08/08 15:24:21 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ Q♠ 7♥ 4♠ 8♣], AI Hand [5♥ 4♦ A♠ 3♥ 3♣], Table [{{3 7}}]
+debug 2025/08/08 15:24:21 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:21 --- Player Defends ---
+debug 2025/08/08 15:24:21 Player Hand Before: [2♣ 6♠ Q♠ 7♥ 4♠ 8♣]
+debug 2025/08/08 15:24:21 Player Hand After Card Removal: [2♣ 6♠ 7♥ 4♠ 8♣]
+debug 2025/08/08 15:24:21 Player Hand After Draw (on board): [2♣ 6♠ 7♥ 4♠ 8♣ 8♦]
+debug 2025/08/08 15:24:21 AI Hand After Draw (on board): [5♥ 4♦ A♠ 3♥ 3♣ 10♦]
+debug 2025/08/08 15:24:21 Player Hand After FromBoard: [2♣ 6♠ 7♥ 4♠ 8♣ 8♦]
+debug 2025/08/08 15:24:21 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:22 Ai turn in progress...
+debug 2025/08/08 15:24:23 --- AI Turn ---
+debug 2025/08/08 15:24:23 AI Turn Start: Attacker 0, Player Hand [2♣ 6♠ 4♠ 8♣ 8♦], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 10♦], Table [{{2 7}}]
+debug 2025/08/08 15:24:23 AI Move: {[] true}
+debug 2025/08/08 15:24:23 Board state after AITurn: Attacker 0, Player Hand [2♣ 6♠ 4♠ 8♣ 8♦ 2♠], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 10♦ 7♥], Table []
+debug 2025/08/08 15:24:23 Game state after FromBoard: Attacker 0, Player Hand [2♣ 6♠ 4♠ 8♣ 8♦ 2♠], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 10♦ 7♥], Table []
+debug 2025/08/08 15:24:23 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:23 Ai turn in progress...
+debug 2025/08/08 15:24:24 --- AI Turn ---
+debug 2025/08/08 15:24:24 AI Turn Start: Attacker 0, Player Hand [2♣ 6♠ 8♣ 8♦ 2♠], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 10♦ 7♥], Table [{{3 4}}]
+debug 2025/08/08 15:24:24 AI Move: {[] true}
+debug 2025/08/08 15:24:24 Board state after AITurn: Attacker 0, Player Hand [2♣ 6♠ 8♣ 8♦ 2♠ 9♦], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 10♦ 7♥ 4♠], Table []
+debug 2025/08/08 15:24:24 Game state after FromBoard: Attacker 0, Player Hand [2♣ 6♠ 8♣ 8♦ 2♠ 9♦], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 10♦ 7♥ 4♠], Table []
+debug 2025/08/08 15:24:24 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:25 Ai turn in progress...
+debug 2025/08/08 15:24:26 --- AI Turn ---
+debug 2025/08/08 15:24:26 AI Turn Start: Attacker 0, Player Hand [2♣ 6♠ 8♦ 2♠ 9♦], AI Hand [5♥ 4♦ A♠ 3♥ 3♣ 10♦ 7♥ 4♠], Table [{{0 8}}]
+debug 2025/08/08 15:24:26 AI Move: {[5♥] false}
+debug 2025/08/08 15:24:26 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ 8♦ 2♠ 9♦ Q♣], AI Hand [4♦ A♠ 3♥ 3♣ 10♦ 7♥ 4♠], Table []
+debug 2025/08/08 15:24:26 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ 8♦ 2♠ 9♦ Q♣], AI Hand [4♦ A♠ 3♥ 3♣ 10♦ 7♥ 4♠], Table []
+debug 2025/08/08 15:24:26 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:24:26 Ai turn in progress...
+debug 2025/08/08 15:24:27 --- AI Turn ---
+debug 2025/08/08 15:24:27 AI Turn Start: Attacker 1, Player Hand [2♣ 6♠ 8♦ 2♠ 9♦ Q♣], AI Hand [4♦ A♠ 3♥ 3♣ 10♦ 7♥ 4♠], Table []
+debug 2025/08/08 15:24:27 AI Move: {[4♦] false}
+debug 2025/08/08 15:24:27 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ 8♦ 2♠ 9♦ Q♣], AI Hand [A♠ 3♥ 3♣ 10♦ 7♥ 4♠], Table [{{1 4}}]
+debug 2025/08/08 15:24:27 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ 8♦ 2♠ 9♦ Q♣], AI Hand [A♠ 3♥ 3♣ 10♦ 7♥ 4♠], Table [{{1 4}}]
+debug 2025/08/08 15:24:27 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:27 --- Player Defends ---
+debug 2025/08/08 15:24:27 Player Hand Before: [2♣ 6♠ 8♦ 2♠ 9♦ Q♣]
+debug 2025/08/08 15:24:27 Player Hand After Card Removal: [2♣ 6♠ 2♠ 9♦ Q♣]
+debug 2025/08/08 15:24:27 Player Hand After Draw (on board): [2♣ 6♠ 2♠ 9♦ Q♣ 10♣]
+debug 2025/08/08 15:24:27 AI Hand After Draw (on board): [A♠ 3♥ 3♣ 10♦ 7♥ 4♠]
+debug 2025/08/08 15:24:27 Player Hand After FromBoard: [2♣ 6♠ 2♠ 9♦ Q♣ 10♣]
+debug 2025/08/08 15:24:27 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:28 Ai turn in progress...
+debug 2025/08/08 15:24:29 --- AI Turn ---
+debug 2025/08/08 15:24:29 AI Turn Start: Attacker 0, Player Hand [2♣ 6♠ 9♦ Q♣ 10♣], AI Hand [A♠ 3♥ 3♣ 10♦ 7♥ 4♠], Table [{{3 2}}]
+debug 2025/08/08 15:24:29 AI Move: {[3♥] false}
+debug 2025/08/08 15:24:29 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ 9♦ Q♣ 10♣ 7♦], AI Hand [A♠ 3♣ 10♦ 7♥ 4♠ 2♦], Table []
+debug 2025/08/08 15:24:29 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ 9♦ Q♣ 10♣ 7♦], AI Hand [A♠ 3♣ 10♦ 7♥ 4♠ 2♦], Table []
+debug 2025/08/08 15:24:29 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:24:29 Ai turn in progress...
+debug 2025/08/08 15:24:30 --- AI Turn ---
+debug 2025/08/08 15:24:30 AI Turn Start: Attacker 1, Player Hand [2♣ 6♠ 9♦ Q♣ 10♣ 7♦], AI Hand [A♠ 3♣ 10♦ 7♥ 4♠ 2♦], Table []
+debug 2025/08/08 15:24:30 AI Move: {[4♠] false}
+debug 2025/08/08 15:24:30 Board state after AITurn: Attacker 1, Player Hand [2♣ 6♠ 9♦ Q♣ 10♣ 7♦], AI Hand [A♠ 3♣ 10♦ 7♥ 2♦], Table [{{3 4}}]
+debug 2025/08/08 15:24:30 Game state after FromBoard: Attacker 1, Player Hand [2♣ 6♠ 9♦ Q♣ 10♣ 7♦], AI Hand [A♠ 3♣ 10♦ 7♥ 2♦], Table [{{3 4}}]
+debug 2025/08/08 15:24:30 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:34 --- Player Defends ---
+debug 2025/08/08 15:24:34 Player Hand Before: [2♣ 6♠ 9♦ Q♣ 10♣ 7♦]
+debug 2025/08/08 15:24:34 Player Hand After Card Removal: [2♣ 9♦ Q♣ 10♣ 7♦]
+debug 2025/08/08 15:24:34 Player Hand After Draw (on board): [2♣ 9♦ Q♣ 10♣ 7♦ K♥]
+debug 2025/08/08 15:24:34 AI Hand After Draw (on board): [A♠ 3♣ 10♦ 7♥ 2♦ K♦]
+debug 2025/08/08 15:24:34 Player Hand After FromBoard: [2♣ 9♦ Q♣ 10♣ 7♦ K♥]
+debug 2025/08/08 15:24:34 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:34 Ai turn in progress...
+debug 2025/08/08 15:24:35 --- AI Turn ---
+debug 2025/08/08 15:24:35 AI Turn Start: Attacker 0, Player Hand [2♣ Q♣ 10♣ 7♦ K♥], AI Hand [A♠ 3♣ 10♦ 7♥ 2♦ K♦], Table [{{1 9}}]
+debug 2025/08/08 15:24:35 AI Move: {[K♦] false}
+debug 2025/08/08 15:24:35 Board state after AITurn: Attacker 1, Player Hand [2♣ Q♣ 10♣ 7♦ K♥ 9♣], AI Hand [A♠ 3♣ 10♦ 7♥ 2♦ J♦], Table []
+debug 2025/08/08 15:24:35 Game state after FromBoard: Attacker 1, Player Hand [2♣ Q♣ 10♣ 7♦ K♥ 9♣], AI Hand [A♠ 3♣ 10♦ 7♥ 2♦ J♦], Table []
+debug 2025/08/08 15:24:35 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:24:35 Ai turn in progress...
+debug 2025/08/08 15:24:36 --- AI Turn ---
+debug 2025/08/08 15:24:36 AI Turn Start: Attacker 1, Player Hand [2♣ Q♣ 10♣ 7♦ K♥ 9♣], AI Hand [A♠ 3♣ 10♦ 7♥ 2♦ J♦], Table []
+debug 2025/08/08 15:24:36 AI Move: {[7♥] false}
+debug 2025/08/08 15:24:36 Board state after AITurn: Attacker 1, Player Hand [2♣ Q♣ 10♣ 7♦ K♥ 9♣], AI Hand [A♠ 3♣ 10♦ 2♦ J♦], Table [{{2 7}}]
+debug 2025/08/08 15:24:36 Game state after FromBoard: Attacker 1, Player Hand [2♣ Q♣ 10♣ 7♦ K♥ 9♣], AI Hand [A♠ 3♣ 10♦ 2♦ J♦], Table [{{2 7}}]
+debug 2025/08/08 15:24:36 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:36 --- Player Defends ---
+debug 2025/08/08 15:24:36 Player Hand Before: [2♣ Q♣ 10♣ 7♦ K♥ 9♣]
+debug 2025/08/08 15:24:36 Player Hand After Card Removal: [Q♣ 10♣ 7♦ K♥ 9♣]
+debug 2025/08/08 15:24:36 Player Hand After Draw (on board): [Q♣ 10♣ 7♦ K♥ 9♣ 5♣]
+debug 2025/08/08 15:24:36 AI Hand After Draw (on board): [A♠ 3♣ 10♦ 2♦ J♦ 2♥]
+debug 2025/08/08 15:24:36 Player Hand After FromBoard: [Q♣ 10♣ 7♦ K♥ 9♣ 5♣]
+debug 2025/08/08 15:24:36 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:37 Ai turn in progress...
+debug 2025/08/08 15:24:38 --- AI Turn ---
+debug 2025/08/08 15:24:38 AI Turn Start: Attacker 0, Player Hand [10♣ 7♦ K♥ 9♣ 5♣], AI Hand [A♠ 3♣ 10♦ 2♦ J♦ 2♥], Table [{{0 12}}]
+debug 2025/08/08 15:24:38 AI Move: {[] true}
+debug 2025/08/08 15:24:38 Board state after AITurn: Attacker 0, Player Hand [10♣ 7♦ K♥ 9♣ 5♣], AI Hand [A♠ 3♣ 10♦ 2♦ J♦ 2♥ Q♣], Table []
+debug 2025/08/08 15:24:38 Game state after FromBoard: Attacker 0, Player Hand [10♣ 7♦ K♥ 9♣ 5♣], AI Hand [A♠ 3♣ 10♦ 2♦ J♦ 2♥ Q♣], Table []
+debug 2025/08/08 15:24:38 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:38 Ai turn in progress...
+debug 2025/08/08 15:24:39 --- AI Turn ---
+debug 2025/08/08 15:24:39 AI Turn Start: Attacker 0, Player Hand [10♣ 7♦ 9♣ 5♣], AI Hand [A♠ 3♣ 10♦ 2♦ J♦ 2♥ Q♣], Table [{{2 13}}]
+debug 2025/08/08 15:24:39 AI Move: {[2♦] false}
+debug 2025/08/08 15:24:39 Board state after AITurn: Attacker 1, Player Hand [10♣ 7♦ 9♣ 5♣], AI Hand [A♠ 3♣ 10♦ J♦ 2♥ Q♣], Table []
+debug 2025/08/08 15:24:39 Game state after FromBoard: Attacker 1, Player Hand [10♣ 7♦ 9♣ 5♣], AI Hand [A♠ 3♣ 10♦ J♦ 2♥ Q♣], Table []
+debug 2025/08/08 15:24:39 AI is new attacker, starting another turn to attack.
+debug 2025/08/08 15:24:39 Ai turn in progress...
+debug 2025/08/08 15:24:40 --- AI Turn ---
+debug 2025/08/08 15:24:40 AI Turn Start: Attacker 1, Player Hand [10♣ 7♦ 9♣ 5♣], AI Hand [A♠ 3♣ 10♦ J♦ 2♥ Q♣], Table []
+debug 2025/08/08 15:24:40 AI Move: {[3♣] false}
+debug 2025/08/08 15:24:40 Board state after AITurn: Attacker 1, Player Hand [10♣ 7♦ 9♣ 5♣], AI Hand [A♠ 10♦ J♦ 2♥ Q♣], Table [{{0 3}}]
+debug 2025/08/08 15:24:40 Game state after FromBoard: Attacker 1, Player Hand [10♣ 7♦ 9♣ 5♣], AI Hand [A♠ 10♦ J♦ 2♥ Q♣], Table [{{0 3}}]
+debug 2025/08/08 15:24:40 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:43 --- Player Defends ---
+debug 2025/08/08 15:24:43 Player Hand Before: [10♣ 7♦ 9♣ 5♣]
+debug 2025/08/08 15:24:43 Player Hand After Card Removal: [7♦ 9♣ 5♣]
+debug 2025/08/08 15:24:43 Player Hand After Draw (on board): [7♦ 9♣ 5♣]
+debug 2025/08/08 15:24:43 AI Hand After Draw (on board): [A♠ 10♦ J♦ 2♥ Q♣]
+debug 2025/08/08 15:24:43 Player Hand After FromBoard: [7♦ 9♣ 5♣]
+debug 2025/08/08 15:24:43 --- Player Defends End: Player is new attacker ---
+debug 2025/08/08 15:24:44 Ai turn in progress...
+debug 2025/08/08 15:24:45 --- AI Turn ---
+debug 2025/08/08 15:24:45 AI Turn Start: Attacker 0, Player Hand [9♣ 5♣], AI Hand [A♠ 10♦ J♦ 2♥ Q♣], Table [{{1 7}}]
+debug 2025/08/08 15:24:45 AI Move: {[] true}
+debug 2025/08/08 15:24:45 Board state after AITurn: Attacker 0, Player Hand [9♣ 5♣], AI Hand [A♠ 10♦ J♦ 2♥ Q♣ 7♦], Table []
+debug 2025/08/08 15:24:45 Game state after FromBoard: Attacker 0, Player Hand [9♣ 5♣], AI Hand [A♠ 10♦ J♦ 2♥ Q♣ 7♦], Table []
+debug 2025/08/08 15:24:45 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:46 Ai turn in progress...
+debug 2025/08/08 15:24:47 --- AI Turn ---
+debug 2025/08/08 15:24:47 AI Turn Start: Attacker 0, Player Hand [5♣], AI Hand [A♠ 10♦ J♦ 2♥ Q♣ 7♦], Table [{{0 9}}]
+debug 2025/08/08 15:24:47 AI Move: {[] true}
+debug 2025/08/08 15:24:47 Board state after AITurn: Attacker 0, Player Hand [5♣], AI Hand [A♠ 10♦ J♦ 2♥ Q♣ 7♦ 9♣], Table []
+debug 2025/08/08 15:24:47 Game state after FromBoard: Attacker 0, Player Hand [5♣], AI Hand [A♠ 10♦ J♦ 2♥ Q♣ 7♦ 9♣], Table []
+debug 2025/08/08 15:24:47 --- AI Turn End: Passing to player ---
+debug 2025/08/08 15:24:48 Ai turn in progress...
+debug 2025/08/08 15:24:49 --- AI Turn ---
+debug 2025/08/08 15:24:49 AI Turn Start: Attacker 0, Player Hand [], AI Hand [A♠ 10♦ J♦ 2♥ Q♣ 7♦ 9♣], Table [{{0 5}}]
+debug 2025/08/08 15:24:49 AI Move: {[] true}
+debug 2025/08/08 15:24:49 Board state after AITurn: Attacker 0, Player Hand [], AI Hand [A♠ 10♦ J♦ 2♥ Q♣ 7♦ 9♣ 5♣], Table []
+debug 2025/08/08 15:24:49 Game state after FromBoard: Attacker 0, Player Hand [], AI Hand [A♠ 10♦ J♦ 2♥ Q♣ 7♦ 9♣ 5♣], Table []

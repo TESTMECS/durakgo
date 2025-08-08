@@ -284,60 +284,149 @@ func renderCards(cards []Card, cursor int, selected bool) string {
 	return strings.Join(lines[:], "\n")
 }
 
-func (g *Game) View() string {
-	var s strings.Builder
+func renderCardsLipGloss(cards []Card, cursor int, selected bool) string {
+	if len(cards) == 0 {
+		return ""
+	}
 
+	// Styles
+	borderColor := lipgloss.Color("240")
+	cursorBorder := lipgloss.Color("69")
+	selectedBorder := lipgloss.Color("190")
+
+	cardStyle := lipgloss.NewStyle().
+		Border(lipgloss.NormalBorder()).
+		BorderForeground(borderColor).
+		Padding(0, 1)
+
+	cursorStyle := cardStyle.Copy().
+		BorderForeground(cursorBorder).
+		Bold(true)
+
+	selectedStyle := cardStyle.Copy().
+		BorderForeground(selectedBorder).
+		Bold(true).
+		Background(lipgloss.Color("236"))
+
+	// Build cards
+	cardViews := make([]string, len(cards))
+	for i, card := range cards {
+		rank := card.Rank.String()
+		suit := card.Suit.String()
+
+		cardText := fmt.Sprintf("%-2s\n  %s\n%2s", rank, suit, rank)
+
+		style := cardStyle
+		if i == cursor {
+			if selected {
+				style = selectedStyle
+			} else {
+				style = cursorStyle
+			}
+		}
+
+		cardViews[i] = style.Render(cardText)
+	}
+
+	// Join cards horizontally
+	return lipgloss.JoinHorizontal(lipgloss.Top, cardViews...)
+}
+
+func (g *Game) View() string {
+	// ===== Styles =====
+	titleStyle := lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color("212")) // pinkish
+
+	sectionStyle := lipgloss.NewStyle().
+		MarginBottom(1) // space between sections
+
+	infoStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("244")) // gray
+
+	gameOverStyle := lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color("9")) // bright red
+
+	statusStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("10")). // green
+		MarginTop(1)
+
+	// ===== Game over view =====
 	if g.gameover {
-		s.WriteString("Game Over!\n")
+		var endMsg string
 		switch g.winner {
 		case 0:
-			s.WriteString("You win!\n")
+			endMsg = "You win!"
 		case 1:
-			s.WriteString("You lose!\n")
+			endMsg = "You lose!"
 		default:
-			s.WriteString("It's a draw!\n")
+			endMsg = "It's a draw!"
 		}
-		return s.String()
+
+		return lipgloss.JoinVertical(lipgloss.Left,
+			gameOverStyle.Render("Game Over!"),
+			endMsg,
+		)
 	}
 
-	s.WriteString("Player 2's hand:\n")
-	s.WriteString(renderCards(g.player2Hand, -1, false)) // No cursor for player 2
-	s.WriteString("\n\n")
+	// ===== Sections =====
+	player2 := lipgloss.JoinVertical(lipgloss.Left,
+		titleStyle.Render("Player 2's hand:"),
+		renderCardsLipGloss(g.player2Hand, -1, false),
+	)
 
-	s.WriteString("Table:\n")
-	if len(g.table) == 0 {
-		s.WriteString("[empty]\n")
-	} else {
-		s.WriteString(renderCards(extractCards(g.table), -1, false)) // No cursor for table
-	}
-	s.WriteString("\n\n")
+	table := lipgloss.JoinVertical(lipgloss.Left,
+		titleStyle.Render("Table:"),
+		func() string {
+			if len(g.table) == 0 {
+				return infoStyle.Render("[empty]")
+			}
+			return renderCardsLipGloss(extractCards(g.table), -1, false)
+		}(),
+	)
 
-	s.WriteString("Player 1's hand:\n")
-	s.WriteString(renderCards(g.player1Hand, g.cursor, true))
-	s.WriteString("\n\n")
+	player1 := lipgloss.JoinVertical(lipgloss.Left,
+		titleStyle.Render("Player 1's hand:"),
+		renderCardsLipGloss(g.player1Hand, g.cursor, true),
+	)
 
-	s.WriteString(fmt.Sprintf("Trump suit: %s | Deck: %d\n", g.trump.String(), len(g.deck)))
+	gameInfo := infoStyle.Render(
+		fmt.Sprintf("Trump suit: %s | Deck: %d", g.trump.String(), len(g.deck)),
+	)
+
+	// ===== Turn prompt =====
+	var prompt string
 	if g.turn == 0 {
 		if g.attacker == 0 {
 			if len(g.table) > 0 {
-				s.WriteString("Your turn to continue attack. (space/enter to play, 'p' to pass)\n")
+				prompt = "Your turn to continue attack. (space/enter to play, 'p' to pass)"
 			} else {
-				s.WriteString("Your turn to attack.\n")
+				prompt = "Your turn to attack."
 			}
 		} else {
-			s.WriteString("Your turn to defend. (space/enter to play, 't' to take)\n")
+			prompt = "Your turn to defend. (space/enter to play, 't' to take)"
 		}
 	} else {
 		if g.attacker == 1 {
-			s.WriteString("AI is attacking...\n")
+			prompt = "AI is attacking..."
 		} else {
-			s.WriteString("AI is defending...\n")
+			prompt = "AI is defending..."
 		}
 	}
 
-	s.WriteString("Use left/right arrows to move, 'q' to quit.")
+	status := statusStyle.Render(prompt)
+	controls := infoStyle.Render("Use left/right arrows to move, 'q' to quit.")
 
-	return s.String()
+	// ===== Final layout =====
+	return lipgloss.JoinVertical(lipgloss.Left,
+		sectionStyle.Render(player2),
+		sectionStyle.Render(table),
+		sectionStyle.Render(player1),
+		sectionStyle.Render(gameInfo),
+		status,
+		controls,
+	)
 }
 
 func main() {
@@ -356,4 +445,3 @@ func main() {
 		os.Exit(1)
 	}
 }
-
