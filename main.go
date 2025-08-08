@@ -113,17 +113,31 @@ func (g *Game) FromBoard(b *Board) {
 // Called after passTurnToAI
 func aiMove(g *Game) tea.Cmd {
 	return func() tea.Msg {
+		log.Println("--- AI Turn ---")
 		board := g.ToBoard()
+		log.Printf("AI Turn Start: Attacker %d, Player Hand %v, AI Hand %v, Table %v", board.Attacker, board.PlayerHand, board.OpponentHand, board.Table)
+
 		g.engine.AITurn(board)
+		log.Printf("Board state after AITurn: Attacker %d, Player Hand %v, AI Hand %v, Table %v", board.Attacker, board.PlayerHand, board.OpponentHand, board.Table)
+
 		g.FromBoard(board)
+		log.Printf("Game state after FromBoard: Attacker %d, Player Hand %v, AI Hand %v, Table %v", g.attacker, g.player1Hand, g.player2Hand, g.table)
+
 		isover, win := g.engine.CheckGameOver(g.ToBoard())
 		if isover {
 			g.gameover = true
 			g.winner = win
-		} else {
-			// After AI move, it's player's turn
-			g.turn = 0
+			return aiFinishedTurn{}
 		}
+
+		// If AI defended successfully, it becomes the new attacker and must attack immediately.
+		if g.attacker == 1 && len(g.table) == 0 {
+			log.Println("AI is new attacker, starting another turn to attack.")
+			return passTurnToAI{}
+		}
+
+		g.turn = 0
+		log.Println("--- AI Turn End: Passing to player ---")
 		return aiFinishedTurn{}
 	}
 }
@@ -208,21 +222,26 @@ func (g *Game) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						attackingCard := g.table[len(g.table)-1].c
 						defendingCard := g.player1Hand[g.cursor]
 						if g.engine.CanBeat(attackingCard, defendingCard, g.trump) {
+							log.Println("--- Player Defends ---")
+							log.Printf("Player Hand Before: %v", g.player1Hand)
 							// Player defends successfully, round ends.
 							g.table = []TableCards{}
 							g.player1Hand = append(g.player1Hand[:g.cursor], g.player1Hand[g.cursor+1:]...)
 							if g.cursor >= len(g.player1Hand) && len(g.player1Hand) > 0 {
 								g.cursor = len(g.player1Hand) - 1
 							}
+							log.Printf("Player Hand After Card Removal: %v", g.player1Hand)
 
 							board := g.ToBoard()
-							board.PlayerHand = g.player1Hand
-							board.Table = g.table
 							g.engine.DrawCards(board)
+							log.Printf("Player Hand After Draw (on board): %v", board.PlayerHand)
+							log.Printf("AI Hand After Draw (on board): %v", board.OpponentHand)
 							g.FromBoard(board)
+							log.Printf("Player Hand After FromBoard: %v", g.player1Hand)
 
 							g.attacker = 0 // Player becomes the new attacker
 							g.turn = 0     // It's player's turn to attack
+							log.Println("--- Player Defends End: Player is new attacker ---")
 							return g, nil
 						}
 					}
@@ -257,9 +276,9 @@ func renderCards(cards []Card, cursor int, selected bool) string {
 		lines[3] += fmt.Sprintf("│   %2s│ ", rank)
 		lines[4] += "└─────┘ "
 		if selected && i == cursor {
-			lines[5] += "   ^   "
+			lines[5] += "   ^    "
 		} else {
-			lines[5] += "       "
+			lines[5] += "        "
 		}
 	}
 	return strings.Join(lines[:], "\n")
@@ -297,7 +316,7 @@ func (g *Game) View() string {
 	s.WriteString(renderCards(g.player1Hand, g.cursor, true))
 	s.WriteString("\n\n")
 
-	s.WriteString(fmt.Sprintf("Trump suit: %s\n", g.trump.String()))
+	s.WriteString(fmt.Sprintf("Trump suit: %s | Deck: %d\n", g.trump.String(), len(g.deck)))
 	if g.turn == 0 {
 		if g.attacker == 0 {
 			if len(g.table) > 0 {
@@ -337,3 +356,4 @@ func main() {
 		os.Exit(1)
 	}
 }
+

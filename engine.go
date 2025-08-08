@@ -93,9 +93,13 @@ func (e *Engine) GetLegalMoves(board *Board) []Move {
 }
 
 // CanBeat checks if a defending card can beat an attacking card.
+// Bug here
 func (e *Engine) CanBeat(attack Card, defense Card, trump Suit) bool {
 	if attack.Suit == defense.Suit {
 		return defense.Rank > attack.Rank
+	}
+	if attack.Suit == trump {
+		return defense.Suit != trump
 	}
 	if defense.Suit == trump {
 		return attack.Suit != trump
@@ -189,4 +193,3 @@ func removeCard(hand []Card, cardToRemove Card) []Card {
 	}
 	return hand
 }
-
