@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -39,18 +38,6 @@ type Board struct {
 	Attacker     Player
 	Deck         []Card
 }
-
-// TODO: Use;
-const (
-	size   = 3
-	yellow = "#FF9E3B"
-	dark   = "#3C3A32"
-	gray   = "#717C7C"
-	light  = "#DCD7BA"
-	red    = "#E63D3D"
-	green  = "#98BB6C"
-	blue   = "#7E9CD8"
-)
 
 // Initialize Game Shuffles the deck, creates the player's hand
 // Creates the Opponent's Hand and Creates the Game Struct
@@ -258,30 +245,6 @@ func extractCards(table []TableCards) []Card {
 		cards[i] = tc.c
 	}
 	return cards
-}
-
-// renderCards renders cards side-by-side, highlighting the selected card.
-func renderCards(cards []Card, cursor int, selected bool) string {
-	if len(cards) == 0 {
-		return ""
-	}
-	var lines [6]string
-	for i, card := range cards {
-		rank := card.Rank.String()
-		suit := card.Suit.String()
-
-		lines[0] += "┌─────┐ "
-		lines[1] += fmt.Sprintf("│%-2s   │ ", rank)
-		lines[2] += fmt.Sprintf("│  %s  │ ", suit)
-		lines[3] += fmt.Sprintf("│   %2s│ ", rank)
-		lines[4] += "└─────┘ "
-		if selected && i == cursor {
-			lines[5] += "   ^    "
-		} else {
-			lines[5] += "        "
-		}
-	}
-	return strings.Join(lines[:], "\n")
 }
 
 func renderCardsLipGloss(cards []Card, cursor int, selected bool) string {
