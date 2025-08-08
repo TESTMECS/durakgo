@@ -247,6 +247,38 @@ func extractCards(table []TableCards) []Card {
 	return cards
 }
 
+// renderCardBackLipGloss renders a face-down card.
+// count = number of cards to render side-by-side
+func renderCardBackLipGloss(count int) string {
+	if count <= 0 {
+		return ""
+	}
+
+	// Style for back of the card
+	backStyle := lipgloss.NewStyle().
+		Border(lipgloss.NormalBorder()).
+		BorderForeground(lipgloss.Color("240")). // gray border
+		Background(lipgloss.Color("57")).        // blue background
+		Foreground(lipgloss.Color("230")).       // light foreground for pattern
+		Padding(0, 1)
+
+	// The "pattern" inside the back of the card
+	// You can change to ▒░▓ etc. for texture
+	backText := lipgloss.JoinVertical(lipgloss.Center,
+		"▒▒▒",
+		"▒▒▒",
+		"▒▒▒",
+	)
+
+	// Render N backs side-by-side
+	backs := make([]string, count)
+	for i := 0; i < count; i++ {
+		backs[i] = backStyle.Render(backText)
+	}
+
+	return lipgloss.JoinHorizontal(lipgloss.Top, backs...)
+}
+
 func renderCardsLipGloss(cards []Card, cursor int, selected bool) string {
 	if len(cards) == 0 {
 		return ""
@@ -335,8 +367,9 @@ func (g *Game) View() string {
 
 	// ===== Sections =====
 	player2 := lipgloss.JoinVertical(lipgloss.Left,
-		titleStyle.Render("Player 2's hand:"),
-		renderCardsLipGloss(g.player2Hand, -1, false),
+		titleStyle.Render("Computer's hand:"),
+		// renderCardsLipGloss(g.player2Hand, -1, false),
+		renderCardBackLipGloss(len(g.player2Hand)),
 	)
 
 	table := lipgloss.JoinVertical(lipgloss.Left,
