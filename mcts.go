@@ -24,8 +24,9 @@ type GameEngine interface {
 }
 
 type mcts struct {
-	engine GameEngine
-	depth  int
+	engine              GameEngine
+	depth               int
+	simulationStepLimit int
 }
 
 // Node represents a node in the Monte Carlo search tree
@@ -40,7 +41,11 @@ type Node struct {
 }
 
 func NewMCTS(engine GameEngine, depth int) AI {
-	return &mcts{engine, depth}
+	return &mcts{
+		engine:              engine,
+		depth:               depth,
+		simulationStepLimit: 100, // Limit simulations to 100 moves
+	}
 }
 
 func (m *mcts) Solve(board *Board) Move {
@@ -85,7 +90,7 @@ func (m *mcts) Solve(board *Board) Move {
 		}
 
 		// 3. Simulation
-		for {
+		for j := 0; j < m.simulationStepLimit; j++ {
 			gameOver, _ := m.engine.CheckGameOver(simulationBoard)
 			if gameOver {
 				break
@@ -103,35 +108,35 @@ func (m *mcts) Solve(board *Board) Move {
 		// 4. Backpropagation
 		_, winner := m.engine.CheckGameOver(simulationBoard)
 		for node != nil {
-			var playerWhoMovedToThisState Player
-			if node.parent != nil {
-				playerWhoMovedToThisState = node.parent.playerToMove
-			} else {
-				playerWhoMovedToThisState = m.engine.GetOpponent(node.playerToMove)
-			}
-			node.update(winner, playerWhoMovedToThisState)
+			node.update(winner)
 			node = node.parent
 		}
 	}
 
-	// Return the move from the most visited child node
+	// Return the move from the child with the highest win rate.
 	var bestMove Move
-	maxVisits := -1
+	bestScore := -1.0
 	for _, child := range root.children {
-		if child.visits > maxVisits {
-			maxVisits = child.visits
-			bestMove = child.move
+		if child.visits > 0 {
+			score := child.wins / float64(child.visits)
+			if score > bestScore {
+				bestScore = score
+				bestMove = child.move
+			}
 		}
 	}
 
-	if maxVisits == -1 {
-		log.Println("MCTS: No children expanded, returning 'take' move.")
+	if bestScore == -1.0 {
+		log.Println("MCTS: No children visited, returning 'take' move as fallback.")
 		for _, move := range legalMoves {
 			if move.take {
 				return move
 			}
 		}
-		// Fallback, though should be unreachable if GetLegalMoves is correct
+		// Fallback if 'take' is not a legal move for some reason.
+		if len(legalMoves) > 0 {
+			return legalMoves[0]
+		}
 		return Move{take: true}
 	}
 
@@ -170,9 +175,15 @@ func (n *Node) selectChild() *Node {
 		if child.visits == 0 {
 			score = math.MaxFloat64 // Prioritize unvisited nodes
 		} else {
-			exploit := child.wins / float64(child.visits)
-			explore := c * math.Sqrt(math.Log(float64(n.visits))/float64(child.visits))
-			score = exploit + explore
+			winRate := child.wins / float64(child.visits)
+			// If it's the opponent's turn at this node (player 0), they will try to maximize
+			// their win rate, which is 1 - our (AI's) win rate.
+			if n.playerToMove != 1 { // AI is player 1
+				winRate = 1.0 - winRate
+			}
+
+			explore := c * math.Sqrt(math.Log(float64(n.visits)) / float64(child.visits))
+			score = winRate + explore
 		}
 
 		if score > bestScore {
@@ -184,12 +195,12 @@ func (n *Node) selectChild() *Node {
 }
 
 // update updates the node's statistics from a simulation result.
-func (n *Node) update(winner Player, playerWhoMovedToThisState Player) {
+// Wins are from the perspective of player 1 (the AI).
+func (n *Node) update(winner Player) {
 	n.visits++
-	if winner == playerWhoMovedToThisState {
+	if winner == 1 { // AI is player 1
 		n.wins += 1.0
 	} else if winner == -1 { // Draw
 		n.wins += 0.5
 	}
 }
-

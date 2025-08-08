@@ -3,4 +3,4 @@ clean:
 build:
     go build . 
 logs:
-    less debug.log
+    bat debug.log

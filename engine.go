@@ -22,7 +22,7 @@ type Engine struct {
 
 func NewEngine() *Engine {
 	engine := &Engine{}
-	engine.AI = NewMCTS(engine, 1000)
+	engine.AI = NewMCTS(engine, 100)
 	return engine
 }
 
@@ -52,17 +52,13 @@ func (e *Engine) AITurn(board *Board) {
 // GetLegalMoves returns all legal moves for the current player.
 func (e *Engine) GetLegalMoves(board *Board) []Move {
 	var moves []Move
-	var hand []Card
-	if board.Attacker == 0 {
-		hand = board.PlayerHand
-	} else {
-		hand = board.OpponentHand
-	}
+	hand := board.OpponentHand // AI's hand
 
-	if board.Attacker == 1 { // AI is Attacker
-		// Attacking moves
+	isAIAttacking := board.Attacker == 1
+
+	if isAIAttacking { // AI is Attacking
 		if len(board.Table) == 0 {
-			// Can play any card
+			// Can play any card to start attack
 			for _, card := range hand {
 				moves = append(moves, Move{Card: []Card{card}})
 			}
@@ -77,11 +73,10 @@ func (e *Engine) GetLegalMoves(board *Board) []Move {
 					moves = append(moves, Move{Card: []Card{card}})
 				}
 			}
+			// "take" move is to pass and end the attack round
+			moves = append(moves, Move{take: true})
 		}
-		// "take" move is to pass
-		moves = append(moves, Move{take: true})
-	} else { // AI is Defender
-		// Defending moves
+	} else { // AI is Defending
 		if len(board.Table) > 0 {
 			attackingCard := board.Table[len(board.Table)-1].c
 			for _, card := range hand {
@@ -124,9 +119,12 @@ func (e *Engine) PlayMove(board *Board, move Move) {
 	if move.take {
 		if board.Attacker == 1 { // AI is attacker and passes
 			board.Attacker = e.GetOpponent(board.Attacker)
+			board.Table = []TableCards{} // Round ends, cards are discarded
 		} else { // AI is defender and takes
 			if len(board.Table) > 0 {
-				board.OpponentHand = append(board.OpponentHand, board.Table[len(board.Table)-1].c)
+				for _, tc := range board.Table {
+					board.OpponentHand = append(board.OpponentHand, tc.c)
+				}
 				board.Table = []TableCards{}
 			}
 		}
@@ -143,15 +141,16 @@ func (e *Engine) PlayMove(board *Board, move Move) {
 		if len(board.Table) > 0 {
 			attackingCard := board.Table[len(board.Table)-1].c
 			if e.CanBeat(attackingCard, card, board.TrumpSuit) {
-				board.Table = append(board.Table, TableCards{c: card})
-				board.OpponentHand = removeCard(board.OpponentHand, card)
 				// Successful defense, round ends.
 				board.Table = []TableCards{}
+				board.OpponentHand = removeCard(board.OpponentHand, card)
 				e.DrawCards(board)
 				board.Attacker = e.GetOpponent(board.Attacker) // AI becomes attacker
 			} else {
 				// Invalid move, treat as taking cards.
-				board.OpponentHand = append(board.OpponentHand, board.Table[len(board.Table)-1].c)
+				for _, tc := range board.Table {
+					board.OpponentHand = append(board.OpponentHand, tc.c)
+				}
 				board.Table = []TableCards{}
 				e.DrawCards(board)
 			}
@@ -190,3 +189,4 @@ func removeCard(hand []Card, cardToRemove Card) []Card {
 	}
 	return hand
 }
+
